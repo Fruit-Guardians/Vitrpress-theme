@@ -30,10 +30,12 @@ function useStyle(props, layout, store, table) {
   const footerScrollHeight = vue.ref(0);
   const appendScrollHeight = vue.ref(0);
   vue.watchEffect(() => {
-    layout.setHeight(props.height);
+    var _a;
+    layout.setHeight((_a = props.height) != null ? _a : null);
   });
   vue.watchEffect(() => {
-    layout.setMaxHeight(props.maxHeight);
+    var _a;
+    layout.setMaxHeight((_a = props.maxHeight) != null ? _a : null);
   });
   vue.watch(() => [props.currentRowKey, store.states.rowKey], ([currentRowKey, rowKey]) => {
     if (!vue.unref(rowKey) || !vue.unref(currentRowKey))
@@ -58,7 +60,7 @@ function useStyle(props, layout, store, table) {
     if (table.hoverState)
       table.hoverState = null;
   };
-  const handleHeaderFooterMousewheel = (event, data) => {
+  const handleHeaderFooterMousewheel = (_event, data) => {
     const { pixelX, pixelY } = data;
     if (Math.abs(pixelX) >= Math.abs(pixelY)) {
       table.refs.bodyWrapper.scrollLeft += data.pixelX / 5;
@@ -77,6 +79,8 @@ function useStyle(props, layout, store, table) {
       layout.updateElsHeight();
     }
     layout.updateColumnsWidth();
+    if (typeof window === "undefined")
+      return;
     requestAnimationFrame(syncPosition);
   };
   vue.onMounted(async () => {
@@ -216,7 +220,7 @@ function useStyle(props, layout, store, table) {
   });
   const emptyBlockStyle = vue.computed(() => {
     if (props.data && props.data.length)
-      return null;
+      return;
     let height = "100%";
     if (props.height && bodyScrollHeight.value) {
       height = `${bodyScrollHeight.value}px`;
@@ -236,7 +240,7 @@ function useStyle(props, layout, store, table) {
     if (props.maxHeight) {
       if (!Number.isNaN(Number(props.maxHeight))) {
         return {
-          maxHeight: `${props.maxHeight - headerScrollHeight.value - footerScrollHeight.value}px`
+          maxHeight: `${+props.maxHeight - headerScrollHeight.value - footerScrollHeight.value}px`
         };
       } else {
         return {
@@ -246,21 +250,6 @@ function useStyle(props, layout, store, table) {
     }
     return {};
   });
-  const handleFixedMousewheel = (event, data) => {
-    const bodyWrapper = table.refs.bodyWrapper;
-    if (Math.abs(data.spinY) > 0) {
-      const currentScrollTop = bodyWrapper.scrollTop;
-      if (data.pixelY < 0 && currentScrollTop !== 0) {
-        event.preventDefault();
-      }
-      if (data.pixelY > 0 && bodyWrapper.scrollHeight - bodyWrapper.clientHeight > currentScrollTop) {
-        event.preventDefault();
-      }
-      bodyWrapper.scrollTop += Math.ceil(data.pixelY / 5);
-    } else {
-      bodyWrapper.scrollLeft += Math.ceil(data.pixelX / 5);
-    }
-  };
   return {
     isHidden,
     renderExpanded,
@@ -270,7 +259,6 @@ function useStyle(props, layout, store, table) {
     handleHeaderFooterMousewheel,
     tableSize,
     emptyBlockStyle,
-    handleFixedMousewheel,
     resizeProxyVisible,
     bodyWidth,
     resizeState,

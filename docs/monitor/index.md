@@ -40,10 +40,7 @@ app/
 ├── config.py
 └── templates/
     └── index.html
-```
-
-
-
+```text
 ### 技术栈
 
 1. 后端框架

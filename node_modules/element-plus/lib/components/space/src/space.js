@@ -69,13 +69,17 @@ const Space = vue.defineComponent({
               if (vnode.isFragment(nested) && shared.isArray(nested.children)) {
                 extractChildren(nested.children, `${parentKey + key}-`, extractedChildren);
               } else {
-                extractedChildren.push(vue.createVNode(item["default"], {
-                  style: itemStyle.value,
-                  prefixCls,
-                  key: `nested-${parentKey + key}`
-                }, {
-                  default: () => [nested]
-                }, vnode.PatchFlags.PROPS | vnode.PatchFlags.STYLE, ["style", "prefixCls"]));
+                if (vue.isVNode(nested) && (nested == null ? void 0 : nested.type) === vue.Comment) {
+                  extractedChildren.push(nested);
+                } else {
+                  extractedChildren.push(vue.createVNode(item["default"], {
+                    style: itemStyle.value,
+                    prefixCls,
+                    key: `nested-${parentKey + key}`
+                  }, {
+                    default: () => [nested]
+                  }, vnode.PatchFlags.PROPS | vnode.PatchFlags.STYLE, ["style", "prefixCls"]));
+                }
               }
             });
           }

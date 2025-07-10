@@ -85,6 +85,12 @@ var ElDescriptionsCell = defineComponent({
         }, renderContent()), directives);
       default: {
         const label = renderLabel();
+        const labelStyle = {};
+        const width2 = addUnit(item.labelWidth || this.descriptions.labelWidth);
+        if (width2) {
+          labelStyle.width = width2;
+          labelStyle.display = "inline-block";
+        }
         return withDirectives(h("td", {
           style,
           class: [ns.e("cell"), align],
@@ -92,6 +98,7 @@ var ElDescriptionsCell = defineComponent({
           rowspan
         }, [
           !isNil(label) ? h("span", {
+            style: labelStyle,
             class: [ns.e("label"), labelClassName]
           }, label) : void 0,
           h("span", {

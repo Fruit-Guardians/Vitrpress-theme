@@ -10,6 +10,7 @@ var install = require('../../utils/vue/install.js');
 const ElDatePicker = install.withInstall(datePicker$1["default"]);
 
 exports.ROOT_PICKER_INJECTION_KEY = constants.ROOT_PICKER_INJECTION_KEY;
+exports.ROOT_PICKER_IS_DEFAULT_FORMAT_INJECTION_KEY = constants.ROOT_PICKER_IS_DEFAULT_FORMAT_INJECTION_KEY;
 exports.datePickerProps = datePicker.datePickerProps;
 exports.ElDatePicker = ElDatePicker;
 exports["default"] = ElDatePicker;

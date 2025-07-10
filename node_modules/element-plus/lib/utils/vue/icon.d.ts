@@ -11,6 +11,7 @@ export declare const TypeComponents: {
     CircleCloseFilled: any;
 };
 export declare const TypeComponentsMap: {
+    primary: any;
     success: any;
     warning: any;
     error: any;

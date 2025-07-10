@@ -7,7 +7,7 @@ export type RovingGroupInjectionContext = {
     loop: Ref<ElRovingFocusGroupProps['loop']>;
     orientation: Ref<ElRovingFocusGroupProps['orientation']>;
     tabIndex: Ref<number>;
-    rovingFocusGroupRef: Ref<HTMLElement | null>;
+    rovingFocusGroupRef: Ref<HTMLElement | undefined>;
     rovingFocusGroupRootStyle: Ref<StyleValue>;
     onBlur: EventHandler;
     onFocus: EventHandler<FocusEvent>;
@@ -16,7 +16,7 @@ export type RovingGroupInjectionContext = {
     onItemShiftTab: () => void;
 };
 export type RovingFocusGroupItemInjectionContext = {
-    rovingFocusGroupItemRef: Ref<HTMLElement | null>;
+    rovingFocusGroupItemRef: Ref<HTMLElement | undefined>;
     tabIndex: Ref<number>;
     handleMousedown: EventHandler;
     handleFocus: EventHandler;

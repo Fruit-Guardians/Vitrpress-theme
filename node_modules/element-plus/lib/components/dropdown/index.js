@@ -27,6 +27,7 @@ exports.dropdownItemProps = dropdown.dropdownItemProps;
 exports.dropdownMenuProps = dropdown.dropdownMenuProps;
 exports.dropdownProps = dropdown.dropdownProps;
 exports.DROPDOWN_INJECTION_KEY = tokens.DROPDOWN_INJECTION_KEY;
+exports.DROPDOWN_INSTANCE_INJECTION_KEY = tokens.DROPDOWN_INSTANCE_INJECTION_KEY;
 exports.ElDropdown = ElDropdown;
 exports.ElDropdownItem = ElDropdownItem;
 exports.ElDropdownMenu = ElDropdownMenu;

@@ -1,4 +1,6 @@
 import { defineComponent } from 'vue';
+import { COMPONENT_NAME } from './constants.mjs';
+import { columnAlignment } from '../../../constants/column-alignment.mjs';
 import { buildProps } from '../../../utils/vue/props/runtime.mjs';
 
 const descriptionItemProps = buildProps({
@@ -28,11 +30,12 @@ const descriptionItemProps = buildProps({
   },
   align: {
     type: String,
+    values: columnAlignment,
     default: "left"
   },
   labelAlign: {
     type: String,
-    default: ""
+    values: columnAlignment
   },
   className: {
     type: String,
@@ -44,7 +47,7 @@ const descriptionItemProps = buildProps({
   }
 });
 const DescriptionItem = defineComponent({
-  name: "ElDescriptionsItem",
+  name: COMPONENT_NAME,
   props: descriptionItemProps
 });
 

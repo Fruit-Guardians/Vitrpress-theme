@@ -3,6 +3,8 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
+var constants = require('./constants.js');
+var columnAlignment = require('../../../constants/column-alignment.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
 
 const descriptionItemProps = runtime.buildProps({
@@ -32,11 +34,12 @@ const descriptionItemProps = runtime.buildProps({
   },
   align: {
     type: String,
+    values: columnAlignment.columnAlignment,
     default: "left"
   },
   labelAlign: {
     type: String,
-    default: ""
+    values: columnAlignment.columnAlignment
   },
   className: {
     type: String,
@@ -48,7 +51,7 @@ const descriptionItemProps = runtime.buildProps({
   }
 });
 const DescriptionItem = vue.defineComponent({
-  name: "ElDescriptionsItem",
+  name: constants.COMPONENT_NAME,
   props: descriptionItemProps
 });
 

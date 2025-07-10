@@ -4,10 +4,11 @@ export declare const useCollapseItem: (props: CollapseItemProps) => {
     id: import("vue").ComputedRef<number>;
     isActive: import("vue").ComputedRef<boolean | undefined>;
     handleFocus: () => void;
-    handleHeaderClick: () => void;
-    handleEnterClick: () => void;
+    handleHeaderClick: (e: MouseEvent) => void;
+    handleEnterClick: (e: KeyboardEvent) => void;
 };
 export declare const useCollapseItemDOM: (props: CollapseItemProps, { focusing, isActive, id }: Partial<ReturnType<typeof useCollapseItem>>) => {
+    itemTitleKls: import("vue").ComputedRef<string[]>;
     arrowKls: import("vue").ComputedRef<string[]>;
     headKls: import("vue").ComputedRef<(string | {
         focusing: boolean | undefined;

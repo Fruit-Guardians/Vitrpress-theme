@@ -5,6 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var timeline = require('./src/timeline.js');
 var timelineItem$1 = require('./src/timeline-item2.js');
 var timelineItem = require('./src/timeline-item.js');
+var tokens = require('./src/tokens.js');
 var install = require('../../utils/vue/install.js');
 
 const ElTimeline = install.withInstall(timeline["default"], {
@@ -13,6 +14,7 @@ const ElTimeline = install.withInstall(timeline["default"], {
 const ElTimelineItem = install.withNoopInstall(timelineItem$1["default"]);
 
 exports.timelineItemProps = timelineItem.timelineItemProps;
+exports.TIMELINE_INJECTION_KEY = tokens.TIMELINE_INJECTION_KEY;
 exports.ElTimeline = ElTimeline;
 exports.ElTimelineItem = ElTimelineItem;
 exports["default"] = ElTimeline;

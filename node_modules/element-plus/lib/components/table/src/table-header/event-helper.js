@@ -3,6 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
+var lodashUnified = require('lodash-unified');
 var tokens = require('../tokens.js');
 var core = require('@vueuse/core');
 var style = require('../../../../utils/dom/style.js');
@@ -28,8 +29,9 @@ function useEvent(props, emit) {
   };
   const draggingColumn = vue.ref(null);
   const dragging = vue.ref(false);
-  const dragState = vue.ref({});
+  const dragState = vue.ref();
   const handleMouseDown = (event, column) => {
+    var _a, _b;
     if (!core.isClient)
       return;
     if (column.children && column.children.length > 0)
@@ -39,8 +41,8 @@ function useEvent(props, emit) {
       const table = parent;
       emit("set-drag-visible", true);
       const tableEl = table == null ? void 0 : table.vnode.el;
-      const tableLeft = tableEl.getBoundingClientRect().left;
-      const columnEl = instance.vnode.el.querySelector(`th.${column.id}`);
+      const tableLeft = tableEl == null ? void 0 : tableEl.getBoundingClientRect().left;
+      const columnEl = (_b = (_a = instance == null ? void 0 : instance.vnode) == null ? void 0 : _a.el) == null ? void 0 : _b.querySelector(`th.${column.id}`);
       const columnRect = columnEl.getBoundingClientRect();
       const minLeft = columnRect.left - tableLeft + 30;
       style.addClass(columnEl, "noclick");
@@ -76,7 +78,7 @@ function useEvent(props, emit) {
           document.body.style.cursor = "";
           dragging.value = false;
           draggingColumn.value = null;
-          dragState.value = {};
+          dragState.value = void 0;
           emit("set-drag-visible", false);
         }
         document.removeEventListener("mousemove", handleMouseMove2);
@@ -106,7 +108,8 @@ function useEvent(props, emit) {
       const rect = target.getBoundingClientRect();
       const bodyStyle = document.body.style;
       const isLastTh = ((_a = target.parentNode) == null ? void 0 : _a.lastElementChild) === target;
-      if (rect.width > 12 && rect.right - event.pageX < 8 && !isLastTh) {
+      const allowDarg = props.allowDragLastColumn || !isLastTh;
+      if (rect.width > 12 && rect.right - event.clientX < 8 && allowDarg) {
         bodyStyle.cursor = "col-resize";
         if (style.hasClass(target, "is-sortable")) {
           target.style.cursor = "col-resize";
@@ -153,7 +156,7 @@ function useEvent(props, emit) {
     let sortProp = states.sortProp.value;
     let sortOrder;
     const sortingColumn = states.sortingColumn.value;
-    if (sortingColumn !== column || sortingColumn === column && sortingColumn.order === null) {
+    if (sortingColumn !== column || sortingColumn === column && lodashUnified.isNull(sortingColumn.order)) {
       if (sortingColumn) {
         sortingColumn.order = null;
       }

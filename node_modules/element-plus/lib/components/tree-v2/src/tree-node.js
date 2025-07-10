@@ -123,7 +123,9 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
             onClick: vue.withModifiers(() => {
             }, ["stop"])
           }, null, 8, ["model-value", "indeterminate", "disabled", "onClick"])) : vue.createCommentVNode("v-if", true),
-          vue.createVNode(vue.unref(treeNodeContent["default"]), { node: _ctx.node }, null, 8, ["node"])
+          vue.createVNode(vue.unref(treeNodeContent["default"]), {
+            node: { ..._ctx.node, expanded: _ctx.expanded }
+          }, null, 8, ["node"])
         ], 6)
       ], 42, ["aria-expanded", "aria-disabled", "aria-checked", "data-key", "onClick", "onDragover", "onDragenter", "onDrop"]);
     };

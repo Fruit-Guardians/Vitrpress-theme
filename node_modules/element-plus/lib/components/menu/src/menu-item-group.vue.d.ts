@@ -1,25 +1,16 @@
-declare const _default: import("vue").DefineComponent<{
+declare function __VLS_template(): {
+    title?(_: {}): any;
+    default?(_: {}): any;
+};
+declare const __VLS_component: import("vue").DefineComponent<{
     readonly title: StringConstructor;
-}, {
-    ns: {
-        namespace: import("vue").ComputedRef<string>;
-        b: (blockSuffix?: string) => string;
-        e: (element?: string) => string;
-        m: (modifier?: string) => string;
-        be: (blockSuffix?: string, element?: string) => string;
-        em: (element?: string, modifier?: string) => string;
-        bm: (blockSuffix?: string, modifier?: string) => string;
-        bem: (blockSuffix?: string, element?: string, modifier?: string) => string;
-        is: {
-            (name: string, state: boolean | undefined): string;
-            (name: string): string;
-        };
-        cssVar: (object: Record<string, string>) => Record<string, string>;
-        cssVarName: (name: string) => string;
-        cssVarBlock: (object: Record<string, string>) => Record<string, string>;
-        cssVarBlockName: (name: string) => string;
-    };
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, Record<string, any>, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, Record<string, any>, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
     readonly title: StringConstructor;
 }>>, {}>;
+declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;
+type __VLS_WithTemplateSlots<T, S> = T & {
+    new (): {
+        $slots: S;
+    };
+};

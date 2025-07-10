@@ -52,10 +52,12 @@ const panelSharedProps = runtime.buildProps({
   showNow: {
     type: Boolean,
     default: true
-  }
+  },
+  showWeekNumber: Boolean
 });
 const panelRangeSharedProps = runtime.buildProps({
   unlinkPanels: Boolean,
+  visible: Boolean,
   parsedValue: {
     type: runtime.definePropType(Array)
   }

@@ -52,7 +52,8 @@ const formProps = runtime.buildProps({
   hideRequiredAsterisk: Boolean,
   scrollToError: Boolean,
   scrollIntoViewOptions: {
-    type: [Object, Boolean]
+    type: [Object, Boolean],
+    default: true
   }
 });
 const formEmits = {

@@ -21,6 +21,8 @@ const useSelect = (props, { attrs, emit }, {
   const result = {
     ...pick(toRefs(props), Object.keys(ElSelect.props)),
     ...attrs,
+    class: computed(() => attrs.class),
+    style: computed(() => attrs.style),
     "onUpdate:modelValue": (value) => emit(UPDATE_MODEL_EVENT, value),
     valueKey: key,
     popperClass: computed(() => {

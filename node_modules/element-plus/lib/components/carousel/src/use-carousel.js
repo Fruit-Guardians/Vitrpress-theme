@@ -10,13 +10,15 @@ var index = require('../../../hooks/use-ordered-children/index.js');
 var shared = require('@vue/shared');
 var error = require('../../../utils/error.js');
 var vnode = require('../../../utils/vue/vnode.js');
+var event = require('../../../constants/event.js');
 
 const THROTTLE_TIME = 300;
 const useCarousel = (props, emit, componentName) => {
   const {
     children: items,
     addChild: addItem,
-    removeChild: removeItem
+    removeChild: removeItem,
+    ChildrenSorter: ItemsSorter
   } = index.useOrderedChildren(vue.getCurrentInstance(), constants.CAROUSEL_ITEM_NAME);
   const slots = vue.useSlots();
   const activeIndex = vue.ref(-1);
@@ -25,8 +27,6 @@ const useCarousel = (props, emit, componentName) => {
   const root = vue.ref();
   const containerHeight = vue.ref(0);
   const isItemsTwoLength = vue.ref(true);
-  const isFirstCall = vue.ref(true);
-  const isTransitioning = vue.ref(false);
   const arrowDisplay = vue.computed(() => props.arrow !== "never" && !vue.unref(isVertical));
   const hasLabel = vue.computed(() => {
     return items.value.some((item) => item.props.label.toString().length > 0);
@@ -67,23 +67,13 @@ const useCarousel = (props, emit, componentName) => {
     timer.value = setInterval(() => playSlides(), props.interval);
   }
   const playSlides = () => {
-    if (!isFirstCall.value) {
-      isTransitioning.value = true;
-    }
-    isFirstCall.value = false;
     if (activeIndex.value < items.value.length - 1) {
       activeIndex.value = activeIndex.value + 1;
     } else if (props.loop) {
       activeIndex.value = 0;
-    } else {
-      isTransitioning.value = false;
     }
   };
   function setActiveItem(index) {
-    if (!isFirstCall.value) {
-      isTransitioning.value = true;
-    }
-    isFirstCall.value = false;
     if (shared.isString(index)) {
       const filteredItems = items.value.filter((item) => item.props.name === index);
       if (filteredItems.length > 0) {
@@ -144,9 +134,6 @@ const useCarousel = (props, emit, componentName) => {
     hover.value = false;
     startTimer();
   }
-  function handleTransitionEnd() {
-    isTransitioning.value = false;
-  }
   function handleButtonEnter(arrow) {
     if (vue.unref(isVertical))
       return;
@@ -164,19 +151,11 @@ const useCarousel = (props, emit, componentName) => {
     });
   }
   function handleIndicatorClick(index) {
-    if (index !== activeIndex.value) {
-      if (!isFirstCall.value) {
-        isTransitioning.value = true;
-      }
-    }
     activeIndex.value = index;
   }
   function handleIndicatorHover(index) {
     if (props.trigger === "hover" && index !== activeIndex.value) {
       activeIndex.value = index;
-      if (!isFirstCall.value) {
-        isTransitioning.value = true;
-      }
     }
   }
   function prev() {
@@ -218,7 +197,7 @@ const useCarousel = (props, emit, componentName) => {
       prev2 = prev2 % 2;
     }
     if (prev2 > -1) {
-      emit("change", current, prev2);
+      emit(event.CHANGE_EVENT, current, prev2);
     }
   });
   vue.watch(() => props.autoplay, (autoplay) => {
@@ -267,13 +246,11 @@ const useCarousel = (props, emit, componentName) => {
     hasLabel,
     hover,
     isCardType,
-    isTransitioning,
     items,
     isVertical,
     containerStyle,
     isItemsTwoLength,
     handleButtonEnter,
-    handleTransitionEnd,
     handleButtonLeave,
     handleIndicatorClick,
     handleMouseEnter,
@@ -283,6 +260,7 @@ const useCarousel = (props, emit, componentName) => {
     next,
     PlaceholderItem,
     isTwoLengthShow,
+    ItemsSorter,
     throttledArrowClick,
     throttledIndicatorHover
   };

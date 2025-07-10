@@ -27,6 +27,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const visible = vue.ref(false);
     let cursorDown = false;
     let cursorLeave = false;
+    let baseScrollHeight = 0;
+    let baseScrollWidth = 0;
     let originalOnSelectStart = core.isClient ? document.onselectstart : null;
     const bar = vue.computed(() => util.BAR_MAP[props.vertical ? "vertical" : "horizontal"]);
     const thumbStyle = vue.computed(() => util.renderThumbStyle({
@@ -58,6 +60,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const startDrag = (e) => {
       e.stopImmediatePropagation();
       cursorDown = true;
+      baseScrollHeight = scrollbar.wrapElement.scrollHeight;
+      baseScrollWidth = scrollbar.wrapElement.scrollWidth;
       document.addEventListener("mousemove", mouseMoveDocumentHandler);
       document.addEventListener("mouseup", mouseUpDocumentHandler);
       originalOnSelectStart = document.onselectstart;
@@ -74,7 +78,11 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       const offset = (instance.value.getBoundingClientRect()[bar.value.direction] - e[bar.value.client]) * -1;
       const thumbClickPosition = thumb.value[bar.value.offset] - prevPage;
       const thumbPositionPercentage = (offset - thumbClickPosition) * 100 * offsetRatio.value / instance.value[bar.value.offset];
-      scrollbar.wrapElement[bar.value.scroll] = thumbPositionPercentage * scrollbar.wrapElement[bar.value.scrollSize] / 100;
+      if (bar.value.scroll === "scrollLeft") {
+        scrollbar.wrapElement[bar.value.scroll] = thumbPositionPercentage * baseScrollWidth / 100;
+      } else {
+        scrollbar.wrapElement[bar.value.scroll] = thumbPositionPercentage * baseScrollHeight / 100;
+      }
     };
     const mouseUpDocumentHandler = () => {
       cursorDown = false;
@@ -113,7 +121,9 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
             ref_key: "instance",
             ref: instance,
             class: vue.normalizeClass([vue.unref(ns).e("bar"), vue.unref(ns).is(vue.unref(bar).key)]),
-            onMousedown: clickTrackHandler
+            onMousedown: clickTrackHandler,
+            onClick: vue.withModifiers(() => {
+            }, ["stop"])
           }, [
             vue.createElementVNode("div", {
               ref_key: "thumb",
@@ -122,7 +132,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
               style: vue.normalizeStyle(vue.unref(thumbStyle)),
               onMousedown: clickThumbHandler
             }, null, 38)
-          ], 34), [
+          ], 42, ["onClick"]), [
             [vue.vShow, _ctx.always || visible.value]
           ])
         ]),

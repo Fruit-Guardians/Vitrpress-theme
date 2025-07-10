@@ -6,6 +6,7 @@ var vue = require('vue');
 var config = require('../config.js');
 var util = require('../util.js');
 var index = require('../../../../hooks/use-namespace/index.js');
+var types = require('../../../../utils/types.js');
 var error = require('../../../../utils/error.js');
 var shared = require('@vue/shared');
 
@@ -53,7 +54,7 @@ function useRender(props, slots, owner) {
     if (!column.minWidth) {
       column.minWidth = 80;
     }
-    column.realWidth = Number(column.width === void 0 ? column.minWidth : column.width);
+    column.realWidth = Number(types.isUndefined(column.width) ? column.minWidth : column.width);
     return column;
   };
   const setColumnForcedProps = (column) => {
@@ -61,7 +62,7 @@ function useRender(props, slots, owner) {
     const source = config.cellForced[type] || {};
     Object.keys(source).forEach((prop) => {
       const value = source[prop];
-      if (prop !== "className" && value !== void 0) {
+      if (prop !== "className" && !types.isUndefined(value)) {
         column[prop] = value;
       }
     });
@@ -99,13 +100,18 @@ function useRender(props, slots, owner) {
         return vue.renderSlot(slots, "filter-icon", scope);
       };
     }
+    if (slots.expand) {
+      column.renderExpand = (scope) => {
+        return vue.renderSlot(slots, "expand", scope);
+      };
+    }
     let originRenderCell = column.renderCell;
     if (column.type === "expand") {
       column.renderCell = (data) => vue.h("div", {
         class: "cell"
       }, [originRenderCell(data)]);
-      owner.value.renderExpanded = (data) => {
-        return slots.default ? slots.default(data) : slots.default;
+      owner.value.renderExpanded = (row) => {
+        return slots.default ? slots.default(row) : slots.default;
       };
     } else {
       originRenderCell = originRenderCell || config.defaultRenderCell;

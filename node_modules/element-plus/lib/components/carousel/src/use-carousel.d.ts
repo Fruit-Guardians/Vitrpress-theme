@@ -8,7 +8,6 @@ export declare const useCarousel: (props: CarouselProps, emit: SetupContext<Caro
     hasLabel: import("vue").ComputedRef<boolean>;
     hover: import("vue").Ref<boolean>;
     isCardType: import("vue").ComputedRef<boolean>;
-    isTransitioning: import("vue").Ref<boolean>;
     items: import("vue").ShallowRef<CarouselItemContext[]>;
     isVertical: import("vue").ComputedRef<boolean>;
     containerStyle: import("vue").ComputedRef<{
@@ -20,7 +19,6 @@ export declare const useCarousel: (props: CarouselProps, emit: SetupContext<Caro
     }>;
     isItemsTwoLength: import("vue").Ref<boolean>;
     handleButtonEnter: (arrow: "left" | "right") => void;
-    handleTransitionEnd: () => void;
     handleButtonLeave: () => void;
     handleIndicatorClick: (index: number) => void;
     handleMouseEnter: () => void;
@@ -33,6 +31,9 @@ export declare const useCarousel: (props: CarouselProps, emit: SetupContext<Caro
         $stable?: boolean;
     })[] | null;
     isTwoLengthShow: (index: number) => boolean;
+    ItemsSorter: import("vue").DefineComponent<{}, () => import("vue").VNode<import("vue").RendererNode, import("vue").RendererElement, {
+        [key: string]: any;
+    }> | null, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, import("vue").EmitsOptions, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{}>>, {}>;
     throttledArrowClick: import("lodash").DebouncedFunc<(index: number) => void>;
     throttledIndicatorHover: import("lodash").DebouncedFunc<(index: number) => void>;
 };

@@ -11,8 +11,8 @@ var pluginVue_exportHelper = require('../../../_virtual/plugin-vue_export-helper
 var index = require('../../../hooks/use-namespace/index.js');
 
 const _sfc_main = vue.defineComponent({
-  props: defaults.OptionProps,
-  emits: defaults.optionEmits,
+  props: defaults.optionV2Props,
+  emits: defaults.optionV2Emits,
   setup(props, { emit }) {
     const select = vue.inject(token.selectV2InjectionKey);
     const ns = index.useNamespace("select");

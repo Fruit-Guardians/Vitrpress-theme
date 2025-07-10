@@ -1,151 +1,202 @@
-<meta name="referrer" content="no-referrer">
-## Vitepress
+---
+title: VitePress 快速上手与进阶
+---
 
-[[TOC]]
+# 🚀 VitePress 快速上手与进阶
 
-> @Author:bx33661
->
-> @content:主要是记录基于Vitepress快速搭建文档站的过程
->
-> @Web：http://doc.bx33661.com
-
-官方网站：https://vitepress.dev/
-
-VitePress 是一个[静态站点生成器](https://en.wikipedia.org/wiki/Static_site_generator) (SSG)，专为构建快速、以内容为中心的站点而设计。简而言之，VitePress 获取用 Markdown 编写的内容，对其应用主题，并生成可以轻松部署到任何地方的静态 HTML 页面。
-
-![image-20241202233346497](https://gitee.com/bx33661/image/raw/master/path/image-20241202233346497.png)
+本章节将详细介绍如何使用 Fruit-Guardians 现代化 VitePress 模板快速搭建文档站点，包括环境准备、配置说明、部署方法以及常见问题解决方案。
 
 ---
 
-一般项目结构
+## 📋 环境准备
 
+### 前置要求
+- **Node.js**：版本 18.0.0 或更高
+- **包管理器**：npm、yarn 或 pnpm
+- **Git**：用于版本控制
+
+### 检查环境
 ```bash
-.
-├─ docs
-│  ├─ .vitepress
-│  │  └─ config.js
-│  ├─ api-examples.md
-│  ├─ markdown-examples.md
-│  └─ index.md
-└─ package.json
+node --version  # 应 >= 18.0.0
+npm --version   # 应 >= 8.0.0
 ```
 
-VitePress 使用 **基于文件的路由**：每个 `.md` 文件将在相同的路径被编译成为 `.html` 文件。例如，`index.md` 将会被编译成 `index.html`，可以在生成的 VitePress 站点的根路径 `/` 进行访问
+---
 
-### 展示效果
+## 🛠️ 快速开始
 
-1. BX-Doc
-
-   ![image-20241202234721618](https://gitee.com/bx33661/image/raw/master/path/image-20241202234721618.png)
-
-2. YY-Blog
-
-![image-20241202234655389](https://gitee.com/bx33661/image/raw/master/path/image-20241202234655389.png)
-
-### 初始化
-
-首先要有Nodejs环境
-
-- 可以自己从空白开始
-
-```(空)
-npm add -D vitepress
-npx vitepress init
+### 1. 克隆模板
+```bash
+git clone https://github.com/Fruit-Guardians/Vitrpress-theme.git
+cd Vitrpress-theme
 ```
 
-设置默认选项就行
-
-![image-20241202234125827](https://gitee.com/bx33661/image/raw/master/path/image-20241202234125827.png)
-
-```(空)
-npm run docs:dev
+### 2. 安装依赖
+```bash
+npm install
 ```
 
-![image-20241202234340386](https://gitee.com/bx33661/image/raw/master/path/image-20241202234340386.png)
+### 3. 启动开发服务器
+```bash
+npm run dev
+```
 
-我们访问5173就可以看到一个基本站点
+### 4. 访问站点
+打开浏览器访问 `http://localhost:5173`
 
-![image-20241202234425790](https://gitee.com/bx33661/image/raw/master/path/image-20241202234425790.png)
+---
 
-- 或者使用别人已经配置好的仓库
+## ⚙️ 配置说明
 
-> 这里推荐几个：
-> https://github.com/Charles7c/charles7c.github.io?tab=readme-ov-file
->
-> https://github.com/shoppingzh/vitepress-template/
+### 基础配置
+编辑 `.vitepress/config.ts`：
 
-就是各种插件和基本配置已经完成了，你只需要稍微修改就行，就是不需要自己造轮子了
+```typescript
+import { defineConfig } from 'vitepress'
 
-
-
-### 侧边栏操作
-
-1. 可以采用自动生成侧边栏的插件
-
-https://vitepress-sidebar.cdget.com/zhHans/
-
-![image-20241205182759989](https://gitee.com/bx33661/image/raw/master/path/image-20241205182759989.png)
-
-2. 官方文档自己配置
-
-在`themeconfig`中,根据路由自动设置
-
-下面是一个多级侧边栏示例：
-
-```yaml
-sidebar: {
-    // 当用户位于 'docc' 目录时，会显示此侧边栏
-    '/docc/': [
-      {
-        text: 'BTool文档',
-        items: [
-          { text: '介绍', link: '/docc/index.md' },
-          { text: 'BTools', link: '/docc/BTools.md' },
-          { text: '蓝图开发模式', link: '/docc/Blueprint.md' },
-          { text: 'Vitepress搭建记录', link: '/docc/Vitepress.md' },
-          { text: 'Docker部署记录',link:'/docc/docker.md'},
-          { text: 'App主路由', link: '/docc/app.md' },
-          { text: '路由模块', link: '/docc/routes.md' },
-          { text: '样式风格', link: '/docc/style.md' },
-          { text: '功能模块', link: '/docc/utils.md' },
-        ]
-      }
+export default defineConfig({
+  title: '你的项目名称',
+  description: '项目描述',
+  themeConfig: {
+    // 导航栏配置
+    nav: [
+      { text: '首页', link: '/' },
+      { text: '文档', link: '/docc/' }
     ],
+    
+    // 侧边栏配置
+    sidebar: {
+      '/docc/': [
+        { text: '快速开始', link: '/docc/index.md' },
+        { text: '功能详解', link: '/docc/features.md' }
+      ]
+    },
+    
+    // 社交链接
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/your-username' }
+    ]
+  }
+})
 ```
 
+### 主题定制
+编辑 `.vitepress/styles/index.css`：
 
-
-### 多样化操作
-
-> 主要列一下我经常使用的一些方案
-
-- 支持emoji
-- 支持目录表
-
-```markdown
-[[TOC]]
+```css
+:root {
+  --vp-c-brand: #6366f1;
+  --vp-c-brand-light: #818cf8;
+  --vp-c-brand-lighter: #a5b4fc;
+  --vp-c-brand-dark: #4f46e5;
+  --vp-c-brand-darker: #3730a3;
+}
 ```
 
-- GitHub风格警报
+---
 
-```markdown
-> [!NOTE]
-> 强调用户在快速浏览文档时也不应忽略的重要信息。
+## 🚀 部署指南
 
-> [!TIP]
-> 有助于用户更顺利达成目标的建议性信息。
+### GitHub Pages
+1. 推送代码到 GitHub
+2. 在仓库设置中启用 GitHub Pages
+3. 选择 `gh-pages` 分支或 `docs` 目录
 
-> [!IMPORTANT]
-> 对用户达成目标至关重要的信息。
+### Vercel
+1. 连接 GitHub 仓库到 Vercel
+2. 构建命令：`npm run build`
+3. 输出目录：`docs/.vitepress/dist`
 
-> [!WARNING]
-> 因为可能存在风险，所以需要用户立即关注的关键内容。
+### Netlify
+1. 连接 GitHub 仓库到 Netlify
+2. 构建命令：`npm run build`
+3. 发布目录：`docs/.vitepress/dist`
 
-> [!CAUTION]
-> 行为可能带来的负面影响。
+### 阿里云 OSS
+```bash
+npm run build
+# 将 docs/.vitepress/dist 目录上传到 OSS
 ```
 
-![image-20241205184120121](https://gitee.com/bx33661/image/raw/master/path/image-20241205184120121.png)
+---
 
-- 代码高亮
-- ....
+## 🎨 自定义主题
+
+### 添加自定义组件
+1. 在 `.vitepress/components/` 下创建 Vue 组件
+2. 组件会自动全局注册
+3. 在 Markdown 中直接使用
+
+### 自定义布局
+1. 在 `.vitepress/layout/` 下创建布局组件
+2. 在 `theme/index.ts` 中引入
+3. 配置为默认布局
+
+### 样式定制
+- 使用 Tailwind CSS 类名
+- 自定义 CSS 变量
+- 支持暗色模式
+
+---
+
+## 🔧 常见问题
+
+### Q: 如何添加新页面？
+A: 在 `docs/` 下新建 `.md` 文件，在 `config.ts` 中配置导航和侧边栏。
+
+### Q: 如何自定义首页？
+A: 编辑 `docs/index.md`，使用 VitePress 的首页布局语法。
+
+### Q: 如何添加搜索功能？
+A: 在 `config.ts` 中配置 `search` 选项，支持本地搜索。
+
+### Q: 如何优化 SEO？
+A: 在 `config.ts` 的 `head` 中添加 meta 标签，VitePress 会自动生成基础 SEO 信息。
+
+### Q: 如何添加图片？
+A: 将图片放在 `docs/public/` 目录下，在 Markdown 中使用 `/图片名.png` 引用。
+
+---
+
+## 📚 进阶技巧
+
+### 1. 使用 Vue 组件
+```vue
+<script setup>
+import { ref } from 'vue'
+
+const count = ref(0)
+</script>
+
+<template>
+  <button @click="count++">点击次数: {{ count }}</button>
+</template>
+```
+
+### 2. 自定义样式
+```vue
+<style scoped>
+.custom-style {
+  color: var(--vp-c-brand);
+}
+</style>
+```
+
+### 3. 使用 Markdown 扩展
+- 支持 GitHub 风格警告框
+- 支持代码高亮
+- 支持数学公式（需配置插件）
+
+---
+
+## 🎯 最佳实践
+
+1. **文档结构**：按功能或章节组织文档
+2. **组件复用**：将常用 UI 封装为组件
+3. **主题统一**：使用 CSS 变量管理主题
+4. **性能优化**：合理使用图片懒加载
+5. **SEO 友好**：为每个页面添加合适的标题和描述
+
+---
+
+> Fruit-Guardians，助你轻松拥有高颜值、高性能的文档站点！

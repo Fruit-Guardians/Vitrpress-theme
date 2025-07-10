@@ -10,7 +10,7 @@ declare const _default: import("vue").DefineComponent<{
     rovingFocusGroupRootStyle: import("vue").Ref<import("vue").StyleValue>;
     tabIndex: import("vue").Ref<number>;
     dropdownKls: import("vue").ComputedRef<string[]>;
-    role: import("vue").ComputedRef<string>;
+    role: import("vue").ComputedRef<import("element-plus/es/utils").EpPropMergeType<StringConstructor, "dialog" | "menu" | "grid" | "listbox" | "tooltip" | "tree" | "group" | "navigation", unknown>>;
     triggerId: import("vue").ComputedRef<string>;
     dropdownListWrapperRef: (el: Element | import("vue").ComponentPublicInstance | null) => void;
     handleKeydown: (e: KeyboardEvent) => void;

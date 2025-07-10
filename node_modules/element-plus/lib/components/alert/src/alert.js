@@ -2,9 +2,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var index = require('../../../hooks/use-delayed-toggle/index.js');
 var icon = require('../../../utils/vue/icon.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
 var objects = require('../../../utils/objects.js');
+var types = require('../../../utils/types.js');
 
 const alertEffects = ["light", "dark"];
 const alertProps = runtime.buildProps({
@@ -35,10 +37,12 @@ const alertProps = runtime.buildProps({
     type: String,
     values: alertEffects,
     default: "light"
-  }
+  },
+  ...index.useDelayedToggleProps
 });
 const alertEmits = {
-  close: (evt) => evt instanceof MouseEvent
+  open: () => true,
+  close: (evt) => types.isUndefined(evt) || evt instanceof Event
 };
 
 exports.alertEffects = alertEffects;

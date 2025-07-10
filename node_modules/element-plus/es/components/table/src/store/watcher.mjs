@@ -1,11 +1,10 @@
-import { getCurrentInstance, toRefs, ref, watch, unref } from 'vue';
-import { isEqual } from 'lodash-unified';
-import { getKeysMap, toggleRowStatus, getRowIdentity, getColumnById, getColumnByKey, orderBy } from '../util.mjs';
+import { getCurrentInstance, toRefs, ref, computed, watch, unref } from 'vue';
+import { getKeysMap, getRowIdentity, toggleRowStatus, getColumnById, getColumnByKey, orderBy } from '../util.mjs';
 import useExpand from './expand.mjs';
 import useCurrent from './current.mjs';
 import useTree from './tree.mjs';
-import { isUndefined } from '../../../../utils/types.mjs';
-import { hasOwn, isArray, isString } from '@vue/shared';
+import { hasOwn, isString, isArray } from '@vue/shared';
+import { castArray } from 'lodash-unified';
 
 const sortData = (data, states) => {
   const sortingColumn = states.sortingColumn;
@@ -56,6 +55,9 @@ function useWatcher() {
   const sortProp = ref(null);
   const sortOrder = ref(null);
   const hoverRow = ref(null);
+  const selectedMap = computed(() => {
+    return rowKey.value ? getKeysMap(selection.value, rowKey.value) : void 0;
+  });
   watch(data, () => {
     var _a2;
     if (instance.state) {
@@ -79,40 +81,30 @@ function useWatcher() {
       updateChildFixed(childColumn);
     });
   };
-  let selectionInitialFixed = void 0;
   const updateColumns = () => {
     _columns.value.forEach((column) => {
       updateChildFixed(column);
     });
-    fixedColumns.value = _columns.value.filter((column) => column.fixed === true || column.fixed === "left");
-    rightFixedColumns.value = _columns.value.filter((column) => column.fixed === "right");
-    if (isUndefined(selectionInitialFixed) && _columns.value[0] && _columns.value[0].type === "selection") {
-      selectionInitialFixed = Boolean(_columns.value[0].fixed);
-    }
-    if (fixedColumns.value.length > 0 && _columns.value[0] && _columns.value[0].type === "selection") {
-      if (!_columns.value[0].fixed) {
-        _columns.value[0].fixed = true;
-        fixedColumns.value.unshift(_columns.value[0]);
-      } else {
-        const hasNotSelectionColumns = fixedColumns.value.some((column) => column.type !== "selection");
-        if (!hasNotSelectionColumns) {
-          _columns.value[0].fixed = selectionInitialFixed;
-          if (!selectionInitialFixed)
-            fixedColumns.value.shift();
-        } else {
-          selectionInitialFixed = void 0;
-        }
+    fixedColumns.value = _columns.value.filter((column) => [true, "left"].includes(column.fixed));
+    const selectColumn = _columns.value.find((column) => column.type === "selection");
+    let selectColFixLeft;
+    if (selectColumn && selectColumn.fixed !== "right" && !fixedColumns.value.includes(selectColumn)) {
+      const selectColumnIndex = _columns.value.indexOf(selectColumn);
+      if (selectColumnIndex === 0 && fixedColumns.value.length) {
+        fixedColumns.value.unshift(selectColumn);
+        selectColFixLeft = true;
       }
     }
-    const notFixedColumns = _columns.value.filter((column) => !column.fixed);
-    originColumns.value = [].concat(fixedColumns.value).concat(notFixedColumns).concat(rightFixedColumns.value);
+    rightFixedColumns.value = _columns.value.filter((column) => column.fixed === "right");
+    const notFixedColumns = _columns.value.filter((column) => (selectColFixLeft ? column.type !== "selection" : true) && !column.fixed);
+    originColumns.value = Array.from(fixedColumns.value).concat(notFixedColumns).concat(rightFixedColumns.value);
     const leafColumns2 = doFlattenColumns(notFixedColumns);
     const fixedLeafColumns2 = doFlattenColumns(fixedColumns.value);
     const rightFixedLeafColumns2 = doFlattenColumns(rightFixedColumns.value);
     leafColumnsLength.value = leafColumns2.length;
     fixedLeafColumnsLength.value = fixedLeafColumns2.length;
     rightFixedLeafColumnsLength.value = rightFixedLeafColumns2.length;
-    columns.value = [].concat(fixedLeafColumns2).concat(leafColumns2).concat(rightFixedLeafColumns2);
+    columns.value = Array.from(fixedLeafColumns2).concat(leafColumns2).concat(rightFixedLeafColumns2);
     isComplex.value = fixedColumns.value.length > 0 || rightFixedColumns.value.length > 0;
   };
   const scheduleLayout = (needUpdateColumns, immediate = false) => {
@@ -126,7 +118,11 @@ function useWatcher() {
     }
   };
   const isSelected = (row) => {
-    return selection.value.some((item) => isEqual(item, row));
+    if (selectedMap.value) {
+      return !!selectedMap.value[getRowIdentity(row, rowKey.value)];
+    } else {
+      return selection.value.includes(row);
+    }
   };
   const clearSelection = () => {
     isAllSelected.value = false;
@@ -137,14 +133,15 @@ function useWatcher() {
     }
   };
   const cleanSelection = () => {
+    var _a2, _b;
     let deleted;
     if (rowKey.value) {
       deleted = [];
-      const selectedMap = getKeysMap(selection.value, rowKey.value);
-      const dataMap = getKeysMap(data.value, rowKey.value);
-      for (const key in selectedMap) {
-        if (hasOwn(selectedMap, key) && !dataMap[key]) {
-          deleted.push(selectedMap[key].row);
+      const childrenKey = (_b = (_a2 = instance == null ? void 0 : instance.store) == null ? void 0 : _a2.states) == null ? void 0 : _b.childrenColumnName.value;
+      const dataMap = getKeysMap(data.value, rowKey.value, true, childrenKey);
+      for (const key in selectedMap.value) {
+        if (hasOwn(selectedMap.value, key) && !dataMap[key]) {
+          deleted.push(selectedMap.value[key].row);
         }
       }
     } else {
@@ -165,7 +162,7 @@ function useWatcher() {
       children: (_b = (_a2 = instance == null ? void 0 : instance.store) == null ? void 0 : _a2.states) == null ? void 0 : _b.childrenColumnName.value,
       checkStrictly: (_d = (_c = instance == null ? void 0 : instance.store) == null ? void 0 : _c.states) == null ? void 0 : _d.checkStrictly.value
     };
-    const changed = toggleRowStatus(selection.value, row, selected, treeProps, ignoreSelectable ? void 0 : selectable.value);
+    const changed = toggleRowStatus(selection.value, row, selected, treeProps, ignoreSelectable ? void 0 : selectable.value, data.value.indexOf(row), rowKey.value);
     if (changed) {
       const newSelection = (selection.value || []).slice();
       if (emitChange) {
@@ -188,7 +185,7 @@ function useWatcher() {
     };
     data.value.forEach((row, index) => {
       const rowIndex = index + childrenCount;
-      if (toggleRowStatus(selection.value, row, value, treeProps, selectable.value, rowIndex)) {
+      if (toggleRowStatus(selection.value, row, value, treeProps, selectable.value, rowIndex, rowKey2)) {
         selectionChanged = true;
       }
       childrenCount += getChildrenCount(getRowIdentity(row, rowKey2));
@@ -198,16 +195,6 @@ function useWatcher() {
     }
     instance.emit("select-all", (selection.value || []).slice());
   };
-  const updateSelectionByRowKey = () => {
-    const selectedMap = getKeysMap(selection.value, rowKey.value);
-    data.value.forEach((row) => {
-      const rowId = getRowIdentity(row, rowKey.value);
-      const rowInfo = selectedMap[rowId];
-      if (rowInfo) {
-        selection.value[rowInfo.index] = row;
-      }
-    });
-  };
   const updateAllSelected = () => {
     var _a2;
     if (((_a2 = data.value) == null ? void 0 : _a2.length) === 0) {
@@ -215,21 +202,13 @@ function useWatcher() {
       return;
     }
     const { childrenColumnName } = instance.store.states;
-    const selectedMap = rowKey.value ? getKeysMap(selection.value, rowKey.value) : void 0;
     let rowIndex = 0;
     let selectedCount = 0;
-    const isSelected2 = (row) => {
-      if (selectedMap) {
-        return !!selectedMap[getRowIdentity(row, rowKey.value)];
-      } else {
-        return selection.value.includes(row);
-      }
-    };
     const checkSelectedStatus = (data2) => {
       var _a3;
       for (const row of data2) {
         const isRowSelectable = selectable.value && selectable.value.call(null, row, rowIndex);
-        if (!isSelected2(row)) {
+        if (!isSelected(row)) {
           if (!selectable.value || isRowSelectable) {
             return false;
           }
@@ -261,12 +240,9 @@ function useWatcher() {
     }
     return count;
   };
-  const updateFilters = (columns2, values) => {
-    if (!isArray(columns2)) {
-      columns2 = [columns2];
-    }
+  const updateFilters = (column, values) => {
     const filters_ = {};
-    columns2.forEach((col) => {
+    castArray(column).forEach((col) => {
       filters.value[col.id] = values;
       filters_[col.columnKey || col.id] = values;
     });
@@ -298,14 +274,15 @@ function useWatcher() {
     filteredData.value = sourceData;
   };
   const execSort = () => {
-    data.value = sortData(filteredData.value, {
+    var _a2;
+    data.value = sortData((_a2 = filteredData.value) != null ? _a2 : [], {
       sortingColumn: sortingColumn.value,
       sortProp: sortProp.value,
       sortOrder: sortOrder.value
     });
   };
   const execQuery = (ignore = void 0) => {
-    if (!(ignore && ignore.filter)) {
+    if (!(ignore == null ? void 0 : ignore.filter)) {
       execFilter();
     }
     execSort();
@@ -413,7 +390,6 @@ function useWatcher() {
     toggleRowSelection,
     _toggleAllSelection,
     toggleAllSelection: null,
-    updateSelectionByRowKey,
     updateAllSelected,
     updateFilters,
     updateCurrentRow,

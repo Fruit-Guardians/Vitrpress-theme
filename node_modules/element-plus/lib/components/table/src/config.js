@@ -42,7 +42,11 @@ const getDefaultClassName = (type) => {
 };
 const cellForced = {
   selection: {
-    renderHeader({ store, column }) {
+    renderHeader({
+      store,
+      column
+    }) {
+      var _a;
       function isDisabled() {
         return store.states.data.value && store.states.data.value.length === 0;
       }
@@ -50,7 +54,7 @@ const cellForced = {
         disabled: isDisabled(),
         size: store.states.tableSize.value,
         indeterminate: store.states.selection.value.length > 0 && !store.states.isAllSelected.value,
-        "onUpdate:modelValue": store.toggleAllSelection,
+        "onUpdate:modelValue": (_a = store.toggleAllSelection) != null ? _a : void 0,
         modelValue: store.states.isAllSelected.value,
         ariaLabel: column.label
       });
@@ -76,7 +80,9 @@ const cellForced = {
     resizable: false
   },
   index: {
-    renderHeader({ column }) {
+    renderHeader({
+      column
+    }) {
       return column.label || "#";
     },
     renderCell({
@@ -95,17 +101,20 @@ const cellForced = {
     sortable: false
   },
   expand: {
-    renderHeader({ column }) {
+    renderHeader({
+      column
+    }) {
       return column.label || "";
     },
     renderCell({
+      column,
       row,
       store,
       expanded
     }) {
       const { ns } = store;
       const classes = [ns.e("expand-icon")];
-      if (expanded) {
+      if (!column.renderExpand && expanded) {
         classes.push(ns.em("expand-icon", "expanded"));
       }
       const callback = function(e) {
@@ -117,6 +126,13 @@ const cellForced = {
         onClick: callback
       }, {
         default: () => {
+          if (column.renderExpand) {
+            return [
+              column.renderExpand({
+                expanded
+              })
+            ];
+          }
           return [
             vue.h(index$1.ElIcon, null, {
               default: () => {

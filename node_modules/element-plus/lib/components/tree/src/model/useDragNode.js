@@ -8,7 +8,13 @@ var shared = require('@vue/shared');
 var style = require('../../../../utils/dom/style.js');
 
 const dragEventsKey = Symbol("dragEvents");
-function useDragNodeHandler({ props, ctx, el$, dropIndicator$, store }) {
+function useDragNodeHandler({
+  props,
+  ctx,
+  el$,
+  dropIndicator$,
+  store
+}) {
   const ns = index.useNamespace("tree");
   const dragState = vue.ref({
     showDropIndicator: false,
@@ -18,6 +24,8 @@ function useDragNodeHandler({ props, ctx, el$, dropIndicator$, store }) {
     dropType: null
   });
   const treeNodeDragStart = ({ event, treeNode }) => {
+    if (!event.dataTransfer)
+      return;
     if (shared.isFunction(props.allowDrag) && !props.allowDrag(treeNode.node)) {
       event.preventDefault();
       return false;
@@ -31,6 +39,8 @@ function useDragNodeHandler({ props, ctx, el$, dropIndicator$, store }) {
     ctx.emit("node-drag-start", treeNode.node, event);
   };
   const treeNodeDragOver = ({ event, treeNode }) => {
+    if (!event.dataTransfer)
+      return;
     const dropNode = treeNode;
     const oldDropNode = dragState.value.dropNode;
     if (oldDropNode && oldDropNode.node.id !== dropNode.node.id) {
@@ -74,7 +84,8 @@ function useDragNodeHandler({ props, ctx, el$, dropIndicator$, store }) {
       dropInner = false;
       dropNext = false;
     }
-    const targetPosition = dropNode.$el.querySelector(`.${ns.be("node", "content")}`).getBoundingClientRect();
+    const dropEl = dropNode.$el;
+    const targetPosition = dropEl.querySelector(`.${ns.be("node", "content")}`).getBoundingClientRect();
     const treePosition = el$.value.getBoundingClientRect();
     let dropType;
     const prevPercent = dropPrev ? dropInner ? 0.25 : dropNext ? 0.45 : 1 : -1;
@@ -90,7 +101,7 @@ function useDragNodeHandler({ props, ctx, el$, dropIndicator$, store }) {
     } else {
       dropType = "none";
     }
-    const iconPosition = dropNode.$el.querySelector(`.${ns.be("node", "expand-icon")}`).getBoundingClientRect();
+    const iconPosition = dropEl.querySelector(`.${ns.be("node", "expand-icon")}`).getBoundingClientRect();
     const dropIndicator = dropIndicator$.value;
     if (dropType === "before") {
       indicatorTop = iconPosition.top - treePosition.top;
@@ -100,9 +111,9 @@ function useDragNodeHandler({ props, ctx, el$, dropIndicator$, store }) {
     dropIndicator.style.top = `${indicatorTop}px`;
     dropIndicator.style.left = `${iconPosition.right - treePosition.left}px`;
     if (dropType === "inner") {
-      style.addClass(dropNode.$el, ns.is("drop-inner"));
+      style.addClass(dropEl, ns.is("drop-inner"));
     } else {
-      style.removeClass(dropNode.$el, ns.is("drop-inner"));
+      style.removeClass(dropEl, ns.is("drop-inner"));
     }
     dragState.value.showDropIndicator = dropType === "before" || dropType === "after";
     dragState.value.allowDrop = dragState.value.showDropIndicator || userAllowDropInner;
@@ -110,20 +121,21 @@ function useDragNodeHandler({ props, ctx, el$, dropIndicator$, store }) {
     ctx.emit("node-drag-over", draggingNode.node, dropNode.node, event);
   };
   const treeNodeDragEnd = (event) => {
+    var _a, _b;
     const { draggingNode, dropType, dropNode } = dragState.value;
     event.preventDefault();
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = "move";
     }
-    if (draggingNode && dropNode) {
+    if ((draggingNode == null ? void 0 : draggingNode.node.data) && dropNode) {
       const draggingNodeCopy = { data: draggingNode.node.data };
       if (dropType !== "none") {
         draggingNode.node.remove();
       }
       if (dropType === "before") {
-        dropNode.node.parent.insertBefore(draggingNodeCopy, dropNode.node);
+        (_a = dropNode.node.parent) == null ? void 0 : _a.insertBefore(draggingNodeCopy, dropNode.node);
       } else if (dropType === "after") {
-        dropNode.node.parent.insertAfter(draggingNodeCopy, dropNode.node);
+        (_b = dropNode.node.parent) == null ? void 0 : _b.insertAfter(draggingNodeCopy, dropNode.node);
       } else if (dropType === "inner") {
         dropNode.node.insertChild(draggingNodeCopy);
       }
@@ -131,8 +143,8 @@ function useDragNodeHandler({ props, ctx, el$, dropIndicator$, store }) {
         store.value.registerNode(draggingNodeCopy);
         if (store.value.key) {
           draggingNode.node.eachNode((node) => {
-            var _a;
-            (_a = store.value.nodesMap[node.data[store.value.key]]) == null ? void 0 : _a.setChecked(node.checked, !store.value.checkStrictly);
+            var _a2;
+            (_a2 = store.value.nodesMap[node.data[store.value.key]]) == null ? void 0 : _a2.setChecked(node.checked, !store.value.checkStrictly);
           });
         }
       }

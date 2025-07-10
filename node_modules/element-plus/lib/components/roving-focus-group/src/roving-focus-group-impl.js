@@ -23,7 +23,7 @@ const _sfc_main = vue.defineComponent({
     const currentTabbedId = vue.ref((_a = props.currentTabId || props.defaultCurrentTabId) != null ? _a : null);
     const isBackingOut = vue.ref(false);
     const isClickFocus = vue.ref(false);
-    const rovingFocusGroupRef = vue.ref(null);
+    const rovingFocusGroupRef = vue.ref();
     const { getItems } = vue.inject(rovingFocusGroup.ROVING_FOCUS_COLLECTION_INJECTION_KEY, void 0);
     const rovingFocusGroupRootStyle = vue.computed(() => {
       return [

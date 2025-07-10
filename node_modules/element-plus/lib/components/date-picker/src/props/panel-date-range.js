@@ -7,8 +7,7 @@ var runtime = require('../../../../utils/vue/props/runtime.js');
 
 const panelDateRangeProps = runtime.buildProps({
   ...shared.panelSharedProps,
-  ...shared.panelRangeSharedProps,
-  visible: Boolean
+  ...shared.panelRangeSharedProps
 });
 
 exports.panelDateRangeProps = panelDateRangeProps;

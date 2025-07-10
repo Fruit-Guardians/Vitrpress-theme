@@ -1,11 +1,16 @@
 import { inject, computed, getCurrentInstance, toRaw, watch } from 'vue';
-import { castArray, get } from 'lodash-unified';
+import { castArray, get, isEqual } from 'lodash-unified';
 import { selectKey, selectGroupKey } from './token.mjs';
+import { COMPONENT_NAME } from './option.mjs';
 import { escapeStringRegexp } from '../../../utils/strings.mjs';
+import { throwError } from '../../../utils/error.mjs';
 import { isObject } from '@vue/shared';
 
 function useOption(props, states) {
   const select = inject(selectKey);
+  if (!select) {
+    throwError(COMPONENT_NAME, "usage: <el-select><el-option /></el-select/>");
+  }
   const selectGroup = inject(selectGroupKey, { disabled: false });
   const itemSelected = computed(() => {
     return contains(castArray(select.props.modelValue), props.value);
@@ -20,7 +25,8 @@ function useOption(props, states) {
     }
   });
   const currentLabel = computed(() => {
-    return props.label || (isObject(props.value) ? "" : props.value);
+    var _a;
+    return (_a = props.label) != null ? _a : isObject(props.value) ? "" : props.value;
   });
   const currentValue = computed(() => {
     return props.value || props.label || "";
@@ -46,7 +52,7 @@ function useOption(props, states) {
   };
   const updateOption = (query) => {
     const regexp = new RegExp(escapeStringRegexp(query), "i");
-    states.visible = regexp.test(currentLabel.value) || props.created;
+    states.visible = regexp.test(String(currentLabel.value)) || props.created;
   };
   watch(() => currentLabel.value, () => {
     if (!props.created && !select.props.remote)
@@ -54,7 +60,8 @@ function useOption(props, states) {
   });
   watch(() => props.value, (val, oldVal) => {
     const { remote, valueKey } = select.props;
-    if (val !== oldVal) {
+    const shouldUpdate = remote ? val !== oldVal : !isEqual(val, oldVal);
+    if (shouldUpdate) {
       select.onOptionDestroy(oldVal, instance.proxy);
       select.onOptionCreate(instance.proxy);
     }

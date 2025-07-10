@@ -24,10 +24,21 @@ const useButton = (props, emit) => {
   const _disabled = useFormCommonProps.useFormDisabled();
   const _ref = vue.ref();
   const slots = vue.useSlots();
-  const _type = vue.computed(() => props.type || (buttonGroupContext == null ? void 0 : buttonGroupContext.type) || "");
+  const _type = vue.computed(() => {
+    var _a;
+    return props.type || (buttonGroupContext == null ? void 0 : buttonGroupContext.type) || ((_a = globalConfig.value) == null ? void 0 : _a.type) || "";
+  });
   const autoInsertSpace = vue.computed(() => {
     var _a, _b, _c;
     return (_c = (_b = props.autoInsertSpace) != null ? _b : (_a = globalConfig.value) == null ? void 0 : _a.autoInsertSpace) != null ? _c : false;
+  });
+  const _plain = vue.computed(() => {
+    var _a, _b, _c;
+    return (_c = (_b = props.plain) != null ? _b : (_a = globalConfig.value) == null ? void 0 : _a.plain) != null ? _c : false;
+  });
+  const _round = vue.computed(() => {
+    var _a, _b, _c;
+    return (_c = (_b = props.round) != null ? _b : (_a = globalConfig.value) == null ? void 0 : _a.round) != null ? _c : false;
   });
   const _props = vue.computed(() => {
     if (props.tag === "button") {
@@ -68,6 +79,8 @@ const useButton = (props, emit) => {
     _type,
     _ref,
     _props,
+    _plain,
+    _round,
     shouldAddSpace,
     handleClick
   };

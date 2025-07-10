@@ -1,13 +1,15 @@
-import { CircleCheckFilled, WarningFilled, CircleCloseFilled, InfoFilled } from '@element-plus/icons-vue';
+import { InfoFilled, CircleCheckFilled, WarningFilled, CircleCloseFilled } from '@element-plus/icons-vue';
 import { buildProps } from '../../../utils/vue/props/runtime.mjs';
 
 const IconMap = {
+  primary: "icon-primary",
   success: "icon-success",
   warning: "icon-warning",
   error: "icon-error",
   info: "icon-info"
 };
 const IconComponentMap = {
+  [IconMap.primary]: InfoFilled,
   [IconMap.success]: CircleCheckFilled,
   [IconMap.warning]: WarningFilled,
   [IconMap.error]: CircleCloseFilled,
@@ -24,7 +26,7 @@ const resultProps = buildProps({
   },
   icon: {
     type: String,
-    values: ["success", "warning", "info", "error"],
+    values: ["primary", "success", "warning", "info", "error"],
     default: "info"
   }
 });

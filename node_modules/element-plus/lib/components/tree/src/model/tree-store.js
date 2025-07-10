@@ -2,6 +2,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var vue = require('vue');
+var lodashUnified = require('lodash-unified');
 var node = require('./node.js');
 var util = require('./util.js');
 var shared = require('@vue/shared');
@@ -9,6 +11,11 @@ var types = require('../../../../utils/types.js');
 
 class TreeStore {
   constructor(options) {
+    this.lazy = false;
+    this.checkStrictly = false;
+    this.autoExpandParent = false;
+    this.defaultExpandAll = false;
+    this.checkDescendants = false;
     this.currentNode = null;
     this.currentNodeKey = null;
     for (const option in options) {
@@ -29,7 +36,7 @@ class TreeStore {
       loadFn(this.root, (data) => {
         this.root.doCreateChildren(data);
         this._initDefaultCheckedNodes();
-      });
+      }, shared.NOOP);
     } else {
       this._initDefaultCheckedNodes();
     }
@@ -37,12 +44,15 @@ class TreeStore {
   filter(value) {
     const filterNodeMethod = this.filterNodeMethod;
     const lazy = this.lazy;
-    const traverse = function(node) {
+    const traverse = async function(node) {
       const childNodes = node.root ? node.root.childNodes : node.childNodes;
-      childNodes.forEach((child) => {
-        child.visible = filterNodeMethod.call(child, value, child.data, child);
-        traverse(child);
-      });
+      for (const [index, child] of childNodes.entries()) {
+        child.visible = !!(filterNodeMethod == null ? void 0 : filterNodeMethod.call(child, value, child.data, child));
+        if (index % 80 === 0 && index > 0) {
+          await vue.nextTick();
+        }
+        await traverse(child);
+      }
       if (!node.visible && childNodes.length) {
         let allHidden = true;
         allHidden = !childNodes.some((child) => child.visible);
@@ -80,12 +90,14 @@ class TreeStore {
     return this.nodesMap[key] || null;
   }
   insertBefore(data, refData) {
+    var _a;
     const refNode = this.getNode(refData);
-    refNode.parent.insertBefore({ data }, refNode);
+    (_a = refNode.parent) == null ? void 0 : _a.insertBefore({ data }, refNode);
   }
   insertAfter(data, refData) {
+    var _a;
     const refNode = this.getNode(refData);
-    refNode.parent.insertAfter({ data }, refNode);
+    (_a = refNode.parent) == null ? void 0 : _a.insertAfter({ data }, refNode);
   }
   remove(data) {
     const node = this.getNode(data);
@@ -114,7 +126,7 @@ class TreeStore {
   }
   _initDefaultCheckedNode(node) {
     const defaultCheckedKeys = this.defaultCheckedKeys || [];
-    if (defaultCheckedKeys.includes(node.key)) {
+    if (!lodashUnified.isNil(node.key) && defaultCheckedKeys.includes(node.key)) {
       node.setChecked(true, !this.checkStrictly);
     }
   }
@@ -132,8 +144,8 @@ class TreeStore {
       this.nodesMap[node.id] = node;
     } else {
       const nodeKey = node.key;
-      if (nodeKey !== void 0)
-        this.nodesMap[node.key] = node;
+      if (!lodashUnified.isNil(nodeKey))
+        this.nodesMap[nodeKey] = node;
     }
   }
   deregisterNode(node) {
@@ -294,16 +306,18 @@ class TreeStore {
     this.currentNode.isCurrent = true;
   }
   setUserCurrentNode(node, shouldAutoExpandParent = true) {
+    var _a;
     const key = node[this.key];
     const currNode = this.nodesMap[key];
     this.setCurrentNode(currNode);
-    if (shouldAutoExpandParent && this.currentNode.level > 1) {
-      this.currentNode.parent.expand(null, true);
+    if (shouldAutoExpandParent && this.currentNode && this.currentNode.level > 1) {
+      (_a = this.currentNode.parent) == null ? void 0 : _a.expand(null, true);
     }
   }
   setCurrentNodeKey(key, shouldAutoExpandParent = true) {
+    var _a;
     this.currentNodeKey = key;
-    if (key === null || key === void 0) {
+    if (types.isPropAbsent(key)) {
       this.currentNode && (this.currentNode.isCurrent = false);
       this.currentNode = null;
       return;
@@ -311,8 +325,8 @@ class TreeStore {
     const node = this.getNode(key);
     if (node) {
       this.setCurrentNode(node);
-      if (shouldAutoExpandParent && this.currentNode.level > 1) {
-        this.currentNode.parent.expand(null, true);
+      if (shouldAutoExpandParent && this.currentNode && this.currentNode.level > 1) {
+        (_a = this.currentNode.parent) == null ? void 0 : _a.expand(null, true);
       }
     }
   }

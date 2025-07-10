@@ -24,14 +24,21 @@ const useCollapseItem = (props) => {
       }
     }, 50);
   };
-  const handleHeaderClick = () => {
+  const handleHeaderClick = (e) => {
     if (props.disabled)
+      return;
+    const target = e.target;
+    if (target == null ? void 0 : target.closest("input, textarea, select"))
       return;
     collapse == null ? void 0 : collapse.handleItemClick(unref(name));
     focusing.value = false;
     isClick.value = true;
   };
-  const handleEnterClick = () => {
+  const handleEnterClick = (e) => {
+    const target = e.target;
+    if (target == null ? void 0 : target.closest("input, textarea, select"))
+      return;
+    e.preventDefault();
     collapse == null ? void 0 : collapse.handleItemClick(unref(name));
   };
   return {
@@ -59,11 +66,13 @@ const useCollapseItemDOM = (props, { focusing, isActive, id }) => {
     ns.be("item", "arrow"),
     ns.is("active", unref(isActive))
   ]);
+  const itemTitleKls = computed(() => [ns.be("item", "title")]);
   const itemWrapperKls = computed(() => ns.be("item", "wrap"));
   const itemContentKls = computed(() => ns.be("item", "content"));
   const scopedContentId = computed(() => ns.b(`content-${unref(id)}`));
   const scopedHeadId = computed(() => ns.b(`head-${unref(id)}`));
   return {
+    itemTitleKls,
     arrowKls,
     headKls,
     rootKls,

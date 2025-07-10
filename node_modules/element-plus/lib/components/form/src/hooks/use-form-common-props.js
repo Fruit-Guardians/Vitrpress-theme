@@ -3,9 +3,9 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
-var constants = require('../constants.js');
-var index = require('../../../../hooks/use-prop/index.js');
 var index$1 = require('../../../../hooks/use-size/index.js');
+var index = require('../../../../hooks/use-prop/index.js');
+var constants = require('../constants.js');
 
 const useFormSize = (fallback, ignore = {}) => {
   const emptyRef = vue.ref(void 0);

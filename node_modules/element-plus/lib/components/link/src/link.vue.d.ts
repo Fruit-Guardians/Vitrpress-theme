@@ -3,8 +3,8 @@ declare function __VLS_template(): {
     icon?(_: {}): any;
 };
 declare const __VLS_component: import("vue").DefineComponent<{
-    readonly type: import("element-plus/es/utils").EpPropFinalized<StringConstructor, "default" | "success" | "warning" | "info" | "primary" | "danger", unknown, "default", boolean>;
-    readonly underline: import("element-plus/es/utils").EpPropFinalized<BooleanConstructor, unknown, unknown, true, boolean>;
+    readonly type: import("element-plus/es/utils").EpPropFinalized<StringConstructor, "default" | "primary" | "success" | "warning" | "info" | "danger", unknown, undefined, boolean>;
+    readonly underline: import("element-plus/es/utils").EpPropFinalized<readonly [BooleanConstructor, StringConstructor], boolean | "always" | "never" | "hover", unknown, undefined, boolean>;
     readonly disabled: BooleanConstructor;
     readonly href: import("element-plus/es/utils").EpPropFinalized<StringConstructor, unknown, unknown, "", boolean>;
     readonly target: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => string) | (() => string) | ((new (...args: any[]) => string) | (() => string))[], unknown, unknown, "_self", boolean>;
@@ -17,8 +17,8 @@ declare const __VLS_component: import("vue").DefineComponent<{
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     click: (evt: MouseEvent) => void;
 }, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    readonly type: import("element-plus/es/utils").EpPropFinalized<StringConstructor, "default" | "success" | "warning" | "info" | "primary" | "danger", unknown, "default", boolean>;
-    readonly underline: import("element-plus/es/utils").EpPropFinalized<BooleanConstructor, unknown, unknown, true, boolean>;
+    readonly type: import("element-plus/es/utils").EpPropFinalized<StringConstructor, "default" | "primary" | "success" | "warning" | "info" | "danger", unknown, undefined, boolean>;
+    readonly underline: import("element-plus/es/utils").EpPropFinalized<readonly [BooleanConstructor, StringConstructor], boolean | "always" | "never" | "hover", unknown, undefined, boolean>;
     readonly disabled: BooleanConstructor;
     readonly href: import("element-plus/es/utils").EpPropFinalized<StringConstructor, unknown, unknown, "", boolean>;
     readonly target: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => string) | (() => string) | ((new (...args: any[]) => string) | (() => string))[], unknown, unknown, "_self", boolean>;
@@ -32,8 +32,8 @@ declare const __VLS_component: import("vue").DefineComponent<{
     onClick?: ((evt: MouseEvent) => any) | undefined;
 }, {
     readonly disabled: boolean;
-    readonly underline: import("element-plus/es/utils").EpPropMergeType<BooleanConstructor, unknown, unknown>;
-    readonly type: import("element-plus/es/utils").EpPropMergeType<StringConstructor, "default" | "success" | "warning" | "info" | "primary" | "danger", unknown>;
+    readonly underline: import("element-plus/es/utils").EpPropMergeType<readonly [BooleanConstructor, StringConstructor], boolean | "always" | "never" | "hover", unknown>;
+    readonly type: import("element-plus/es/utils").EpPropMergeType<StringConstructor, "default" | "primary" | "success" | "warning" | "info" | "danger", unknown>;
     readonly target: string;
     readonly href: string;
 }>;

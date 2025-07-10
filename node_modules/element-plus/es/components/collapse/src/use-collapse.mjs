@@ -3,7 +3,11 @@ import { collapseContextKey } from './constants.mjs';
 import { castArray } from 'lodash-unified';
 import { UPDATE_MODEL_EVENT, CHANGE_EVENT } from '../../../constants/event.mjs';
 import { useNamespace } from '../../../hooks/use-namespace/index.mjs';
+import { isPromise } from '@vue/shared';
+import { isBoolean } from '../../../utils/types.mjs';
+import { throwError, debugWarn } from '../../../utils/error.mjs';
 
+const SCOPE = "ElCollapse";
 const useCollapse = (props, emit) => {
   const activeNames = ref(castArray(props.modelValue));
   const setActiveNames = (_activeNames) => {
@@ -12,7 +16,7 @@ const useCollapse = (props, emit) => {
     emit(UPDATE_MODEL_EVENT, value);
     emit(CHANGE_EVENT, value);
   };
-  const handleItemClick = (name) => {
+  const handleChange = (name) => {
     if (props.accordion) {
       setActiveNames([activeNames.value[0] === name ? "" : name]);
     } else {
@@ -26,6 +30,32 @@ const useCollapse = (props, emit) => {
       setActiveNames(_activeNames);
     }
   };
+  const handleItemClick = async (name) => {
+    const { beforeCollapse } = props;
+    if (!beforeCollapse) {
+      handleChange(name);
+      return;
+    }
+    const shouldChange = beforeCollapse(name);
+    const isPromiseOrBool = [
+      isPromise(shouldChange),
+      isBoolean(shouldChange)
+    ].includes(true);
+    if (!isPromiseOrBool) {
+      throwError(SCOPE, "beforeCollapse must return type `Promise<boolean>` or `boolean`");
+    }
+    if (isPromise(shouldChange)) {
+      shouldChange.then((result) => {
+        if (result !== false) {
+          handleChange(name);
+        }
+      }).catch((e) => {
+        debugWarn(SCOPE, `some error occurred: ${e}`);
+      });
+    } else if (shouldChange) {
+      handleChange(name);
+    }
+  };
   watch(() => props.modelValue, () => activeNames.value = castArray(props.modelValue), { deep: true });
   provide(collapseContextKey, {
     activeNames,
@@ -36,9 +66,12 @@ const useCollapse = (props, emit) => {
     setActiveNames
   };
 };
-const useCollapseDOM = () => {
+const useCollapseDOM = (props) => {
   const ns = useNamespace("collapse");
-  const rootKls = computed(() => ns.b());
+  const rootKls = computed(() => [
+    ns.b(),
+    ns.b(`icon-position-${props.expandIconPosition}`)
+  ]);
   return {
     rootKls
   };

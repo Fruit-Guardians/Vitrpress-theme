@@ -3,8 +3,8 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
-var constants = require('../constants.js');
 var index = require('../../../../hooks/use-id/index.js');
+var constants = require('../constants.js');
 
 const useFormItem = () => {
   const form = vue.inject(constants.formContextKey, void 0);

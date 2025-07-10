@@ -1,4 +1,6 @@
+import type { CSSProperties } from 'vue';
 import type { ScrollStrategy } from './composables/use-scrollbar';
+import type { KeyType } from './types';
 declare const TableV2: import("vue").DefineComponent<{
     readonly cache: import("element-plus/es/utils").EpPropFinalized<NumberConstructor, never, never, 2, false>;
     readonly estimatedRowHeight: {
@@ -8,7 +10,7 @@ declare const TableV2: import("vue").DefineComponent<{
         readonly validator: ((val: unknown) => boolean) | undefined;
         readonly __epPropKey: true;
     };
-    readonly rowKey: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => string | number | symbol) | (() => import("./types").KeyType) | ((new (...args: any[]) => string | number | symbol) | (() => import("./types").KeyType))[], unknown, unknown, "id", boolean>;
+    readonly rowKey: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => string | number | symbol) | (() => KeyType) | ((new (...args: any[]) => string | number | symbol) | (() => KeyType))[], unknown, unknown, "id", boolean>;
     readonly headerClass: {
         readonly type: import("vue").PropType<import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => string | import("./table").HeaderClassNameGetter<any>) | (() => string | import("./table").HeaderClassNameGetter<any>) | ((new (...args: any[]) => string | import("./table").HeaderClassNameGetter<any>) | (() => string | import("./table").HeaderClassNameGetter<any>))[], unknown, unknown>>;
         readonly required: false;
@@ -73,12 +75,12 @@ declare const TableV2: import("vue").DefineComponent<{
         __epPropKey: true;
     };
     readonly expandColumnKey: StringConstructor;
-    readonly expandedRowKeys: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").KeyType[]) | (() => import("./types").KeyType[]) | ((new (...args: any[]) => import("./types").KeyType[]) | (() => import("./types").KeyType[]))[], unknown, unknown, () => never[], boolean>;
-    readonly defaultExpandedRowKeys: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").KeyType[]) | (() => import("./types").KeyType[]) | ((new (...args: any[]) => import("./types").KeyType[]) | (() => import("./types").KeyType[]))[], unknown, unknown, () => never[], boolean>;
+    readonly expandedRowKeys: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => KeyType[]) | (() => KeyType[]) | ((new (...args: any[]) => KeyType[]) | (() => KeyType[]))[], unknown, unknown, () => never[], boolean>;
+    readonly defaultExpandedRowKeys: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => KeyType[]) | (() => KeyType[]) | ((new (...args: any[]) => KeyType[]) | (() => KeyType[]))[], unknown, unknown, () => never[], boolean>;
     readonly class: StringConstructor;
     readonly fixed: BooleanConstructor;
     readonly style: {
-        readonly type: import("vue").PropType<import("vue").CSSProperties>;
+        readonly type: import("vue").PropType<CSSProperties>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
@@ -102,11 +104,11 @@ declare const TableV2: import("vue").DefineComponent<{
     readonly hScrollbarSize: import("element-plus/es/utils").EpPropFinalized<NumberConstructor, unknown, unknown, 6, boolean>;
     readonly vScrollbarSize: import("element-plus/es/utils").EpPropFinalized<NumberConstructor, unknown, unknown, 6, boolean>;
     readonly scrollbarAlwaysOn: BooleanConstructor;
-    readonly sortBy: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("element-plus/es/element-plus").SortBy) | (() => import("element-plus/es/element-plus").SortBy) | ((new (...args: any[]) => import("element-plus/es/element-plus").SortBy) | (() => import("element-plus/es/element-plus").SortBy))[], unknown, unknown, () => {
-        key: import("./types").KeyType;
-        order: import("element-plus/es/element-plus").TableV2SortOrder;
+    readonly sortBy: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").SortBy) | (() => import("./types").SortBy) | ((new (...args: any[]) => import("./types").SortBy) | (() => import("./types").SortBy))[], unknown, unknown, () => {
+        key: KeyType;
+        order: import("element-plus").TableV2SortOrder;
     }, boolean>;
-    readonly sortState: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("element-plus/es/element-plus").SortState) | (() => import("element-plus/es/element-plus").SortState) | ((new (...args: any[]) => import("element-plus/es/element-plus").SortState) | (() => import("element-plus/es/element-plus").SortState))[], unknown, unknown, undefined, boolean>;
+    readonly sortState: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").SortState) | (() => import("./types").SortState) | ((new (...args: any[]) => import("./types").SortState) | (() => import("./types").SortState))[], unknown, unknown, undefined, boolean>;
     readonly onColumnSort: {
         readonly type: import("vue").PropType<import("./table").ColumnSortHandler<any>>;
         readonly required: false;
@@ -120,13 +122,13 @@ declare const TableV2: import("vue").DefineComponent<{
         __epPropKey: true;
     };
     readonly onEndReached: {
-        readonly type: import("vue").PropType<(distance: number) => void>;
+        readonly type: import("vue").PropType<(remainDistance: number) => void>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
     };
     readonly onRowExpand: {
-        readonly type: import("vue").PropType<import("element-plus/es/element-plus").RowExpandHandler>;
+        readonly type: import("vue").PropType<import("element-plus").RowExpandHandler>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
@@ -144,7 +146,7 @@ declare const TableV2: import("vue").DefineComponent<{
         __epPropKey: true;
     };
     readonly rowEventHandlers: {
-        readonly type: import("vue").PropType<import("element-plus/es/element-plus").RowEventHandlers>;
+        readonly type: import("vue").PropType<import("element-plus").RowEventHandlers>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
@@ -158,7 +160,7 @@ declare const TableV2: import("vue").DefineComponent<{
         readonly validator: ((val: unknown) => boolean) | undefined;
         readonly __epPropKey: true;
     };
-    readonly rowKey: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => string | number | symbol) | (() => import("./types").KeyType) | ((new (...args: any[]) => string | number | symbol) | (() => import("./types").KeyType))[], unknown, unknown, "id", boolean>;
+    readonly rowKey: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => string | number | symbol) | (() => KeyType) | ((new (...args: any[]) => string | number | symbol) | (() => KeyType))[], unknown, unknown, "id", boolean>;
     readonly headerClass: {
         readonly type: import("vue").PropType<import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => string | import("./table").HeaderClassNameGetter<any>) | (() => string | import("./table").HeaderClassNameGetter<any>) | ((new (...args: any[]) => string | import("./table").HeaderClassNameGetter<any>) | (() => string | import("./table").HeaderClassNameGetter<any>))[], unknown, unknown>>;
         readonly required: false;
@@ -223,12 +225,12 @@ declare const TableV2: import("vue").DefineComponent<{
         __epPropKey: true;
     };
     readonly expandColumnKey: StringConstructor;
-    readonly expandedRowKeys: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").KeyType[]) | (() => import("./types").KeyType[]) | ((new (...args: any[]) => import("./types").KeyType[]) | (() => import("./types").KeyType[]))[], unknown, unknown, () => never[], boolean>;
-    readonly defaultExpandedRowKeys: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").KeyType[]) | (() => import("./types").KeyType[]) | ((new (...args: any[]) => import("./types").KeyType[]) | (() => import("./types").KeyType[]))[], unknown, unknown, () => never[], boolean>;
+    readonly expandedRowKeys: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => KeyType[]) | (() => KeyType[]) | ((new (...args: any[]) => KeyType[]) | (() => KeyType[]))[], unknown, unknown, () => never[], boolean>;
+    readonly defaultExpandedRowKeys: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => KeyType[]) | (() => KeyType[]) | ((new (...args: any[]) => KeyType[]) | (() => KeyType[]))[], unknown, unknown, () => never[], boolean>;
     readonly class: StringConstructor;
     readonly fixed: BooleanConstructor;
     readonly style: {
-        readonly type: import("vue").PropType<import("vue").CSSProperties>;
+        readonly type: import("vue").PropType<CSSProperties>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
@@ -252,11 +254,11 @@ declare const TableV2: import("vue").DefineComponent<{
     readonly hScrollbarSize: import("element-plus/es/utils").EpPropFinalized<NumberConstructor, unknown, unknown, 6, boolean>;
     readonly vScrollbarSize: import("element-plus/es/utils").EpPropFinalized<NumberConstructor, unknown, unknown, 6, boolean>;
     readonly scrollbarAlwaysOn: BooleanConstructor;
-    readonly sortBy: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("element-plus/es/element-plus").SortBy) | (() => import("element-plus/es/element-plus").SortBy) | ((new (...args: any[]) => import("element-plus/es/element-plus").SortBy) | (() => import("element-plus/es/element-plus").SortBy))[], unknown, unknown, () => {
-        key: import("./types").KeyType;
-        order: import("element-plus/es/element-plus").TableV2SortOrder;
+    readonly sortBy: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").SortBy) | (() => import("./types").SortBy) | ((new (...args: any[]) => import("./types").SortBy) | (() => import("./types").SortBy))[], unknown, unknown, () => {
+        key: KeyType;
+        order: import("element-plus").TableV2SortOrder;
     }, boolean>;
-    readonly sortState: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("element-plus/es/element-plus").SortState) | (() => import("element-plus/es/element-plus").SortState) | ((new (...args: any[]) => import("element-plus/es/element-plus").SortState) | (() => import("element-plus/es/element-plus").SortState))[], unknown, unknown, undefined, boolean>;
+    readonly sortState: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").SortState) | (() => import("./types").SortState) | ((new (...args: any[]) => import("./types").SortState) | (() => import("./types").SortState))[], unknown, unknown, undefined, boolean>;
     readonly onColumnSort: {
         readonly type: import("vue").PropType<import("./table").ColumnSortHandler<any>>;
         readonly required: false;
@@ -270,13 +272,13 @@ declare const TableV2: import("vue").DefineComponent<{
         __epPropKey: true;
     };
     readonly onEndReached: {
-        readonly type: import("vue").PropType<(distance: number) => void>;
+        readonly type: import("vue").PropType<(remainDistance: number) => void>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
     };
     readonly onRowExpand: {
-        readonly type: import("vue").PropType<import("element-plus/es/element-plus").RowExpandHandler>;
+        readonly type: import("vue").PropType<import("element-plus").RowExpandHandler>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
@@ -294,14 +296,14 @@ declare const TableV2: import("vue").DefineComponent<{
         __epPropKey: true;
     };
     readonly rowEventHandlers: {
-        readonly type: import("vue").PropType<import("element-plus/es/element-plus").RowEventHandlers>;
+        readonly type: import("vue").PropType<import("element-plus").RowEventHandlers>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
     };
 }>>, {
     readonly fixed: boolean;
-    readonly rowKey: import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => string | number | symbol) | (() => import("./types").KeyType) | ((new (...args: any[]) => string | number | symbol) | (() => import("./types").KeyType))[], unknown, unknown>;
+    readonly rowKey: import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => string | number | symbol) | (() => KeyType) | ((new (...args: any[]) => string | number | symbol) | (() => KeyType))[], unknown, unknown>;
     readonly useIsScrolling: boolean;
     readonly scrollbarAlwaysOn: boolean;
     readonly cache: number;
@@ -309,14 +311,14 @@ declare const TableV2: import("vue").DefineComponent<{
     readonly rowHeight: number;
     readonly hScrollbarSize: number;
     readonly vScrollbarSize: number;
-    readonly sortBy: import("element-plus/es/element-plus").SortBy;
+    readonly sortBy: import("./types").SortBy;
     readonly headerHeight: import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => number | number[]) | (() => number | number[]) | ((new (...args: any[]) => number | number[]) | (() => number | number[]))[], unknown, unknown>;
     readonly footerHeight: number;
     readonly indentSize: number;
     readonly iconSize: number;
-    readonly sortState: import("element-plus/es/element-plus").SortState;
-    readonly expandedRowKeys: import("./types").KeyType[];
-    readonly defaultExpandedRowKeys: import("./types").KeyType[];
+    readonly sortState: import("./types").SortState;
+    readonly expandedRowKeys: KeyType[];
+    readonly defaultExpandedRowKeys: KeyType[];
 }>;
 export default TableV2;
 export type TableV2Instance = InstanceType<typeof TableV2> & {

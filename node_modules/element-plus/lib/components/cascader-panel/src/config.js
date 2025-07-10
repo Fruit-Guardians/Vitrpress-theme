@@ -5,6 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var vue = require('vue');
 var runtime = require('../../../utils/vue/props/runtime.js');
 var shared = require('@vue/shared');
+var event = require('../../../constants/event.js');
 
 const CommonProps = runtime.buildProps({
   modelValue: {
@@ -33,6 +34,23 @@ const DefaultProps = {
   disabled: "disabled",
   hoverThreshold: 500
 };
+const cascaderPanelProps = runtime.buildProps({
+  ...CommonProps,
+  border: {
+    type: Boolean,
+    default: true
+  },
+  renderLabel: {
+    type: Function
+  }
+});
+const emitChangeFn = (value) => true;
+const cascaderPanelEmits = {
+  [event.UPDATE_MODEL_EVENT]: emitChangeFn,
+  [event.CHANGE_EVENT]: emitChangeFn,
+  close: () => true,
+  "expand-change": (value) => value
+};
 const useCascaderConfig = (props) => {
   return vue.computed(() => ({
     ...DefaultProps,
@@ -42,5 +60,7 @@ const useCascaderConfig = (props) => {
 
 exports.CommonProps = CommonProps;
 exports.DefaultProps = DefaultProps;
+exports.cascaderPanelEmits = cascaderPanelEmits;
+exports.cascaderPanelProps = cascaderPanelProps;
 exports.useCascaderConfig = useCascaderConfig;
 //# sourceMappingURL=config.js.map

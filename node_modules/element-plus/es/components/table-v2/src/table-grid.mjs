@@ -1,5 +1,5 @@
-import { defineComponent, inject, provide, unref, createVNode, ref, computed } from 'vue';
-import { TableV2InjectionKey } from './tokens.mjs';
+import { defineComponent, inject, provide, onActivated, nextTick, unref, createVNode, ref, computed, watch } from 'vue';
+import { TableV2InjectionKey, TABLE_V2_GRID_INJECTION_KEY } from './tokens.mjs';
 import { tableV2GridProps } from './grid.mjs';
 import { sum } from './utils.mjs';
 import Header from './components/header.mjs';
@@ -94,6 +94,13 @@ const useTableGrid = (props) => {
     (_a = unref(bodyRef)) == null ? void 0 : _a.$forceUpdate();
     (_b = unref(headerRef)) == null ? void 0 : _b.$forceUpdate();
   }
+  watch(() => props.bodyWidth, () => {
+    var _a;
+    if (isNumber(props.estimatedRowHeight))
+      (_a = bodyRef.value) == null ? void 0 : _a.resetAfter({
+        columnIndex: 0
+      }, false);
+  });
   return {
     bodyRef,
     forceUpdate,
@@ -139,7 +146,13 @@ const TableGrid = defineComponent({
       scrollToRow,
       scrollLeft
     } = useTableGrid(props);
-    provide("tableV2GridScrollLeft", scrollLeft);
+    provide(TABLE_V2_GRID_INJECTION_KEY, scrollLeft);
+    onActivated(async () => {
+      var _a;
+      await nextTick();
+      const scrollTop = (_a = bodyRef.value) == null ? void 0 : _a.states.scrollTop;
+      scrollTop && scrollToTop(Math.round(scrollTop) + 1);
+    });
     expose({
       forceUpdate,
       totalHeight,

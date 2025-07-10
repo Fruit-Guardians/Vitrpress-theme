@@ -9,11 +9,12 @@ const linkProps = runtime.buildProps({
   type: {
     type: String,
     values: ["primary", "success", "warning", "info", "danger", "default"],
-    default: "default"
+    default: void 0
   },
   underline: {
-    type: Boolean,
-    default: true
+    type: [Boolean, String],
+    values: [true, false, "always", "never", "hover"],
+    default: void 0
   },
   disabled: Boolean,
   href: { type: String, default: "" },

@@ -12,6 +12,7 @@ var fixedSizeList = require('../../virtual-list/src/components/fixed-size-list.j
 var dynamicSizeList = require('../../virtual-list/src/components/dynamic-size-list.js');
 var index = require('../../../hooks/use-namespace/index.js');
 var types = require('../../../utils/types.js');
+var core = require('@vueuse/core');
 var aria = require('../../../constants/aria.js');
 var shared = require('@vue/shared');
 
@@ -43,7 +44,7 @@ var ElSelectMenu = vue.defineComponent({
     const size = vue.computed(() => props2.data.length);
     vue.watch(() => size.value, () => {
       var _a, _b;
-      (_b = (_a = select.tooltipRef.value).updatePopper) == null ? void 0 : _b.call(_a);
+      (_b = (_a = select.tooltipRef.value) == null ? void 0 : _a.updatePopper) == null ? void 0 : _b.call(_a);
     });
     const isSized = vue.computed(() => types.isUndefined(select.props.estimatedOptionHeight));
     const listProps = vue.computed(() => {
@@ -183,7 +184,7 @@ var ElSelectMenu = vue.defineComponent({
         enter,
         numpadEnter
       } = aria.EVENT_CODE;
-      if (code !== tab) {
+      if ([esc, down, up, enter, numpadEnter].includes(code)) {
         e.preventDefault();
         e.stopPropagation();
       }
@@ -214,6 +215,9 @@ var ElSelectMenu = vue.defineComponent({
         multiple,
         scrollbarAlwaysOn
       } = select.props;
+      const isScrollbarAlwaysOn = vue.computed(() => {
+        return core.isIOS ? true : scrollbarAlwaysOn;
+      });
       const List = vue.unref(isSized) ? fixedSizeList["default"] : dynamicSizeList["default"];
       return vue.createVNode("div", {
         "class": [ns.b("dropdown"), ns.is("multiple", multiple)],
@@ -224,7 +228,7 @@ var ElSelectMenu = vue.defineComponent({
         "ref": listRef
       }, vue.unref(listProps), {
         "className": ns.be("dropdown", "list"),
-        "scrollbarAlwaysOn": scrollbarAlwaysOn,
+        "scrollbarAlwaysOn": isScrollbarAlwaysOn.value,
         "data": data,
         "height": height,
         "width": width,

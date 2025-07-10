@@ -12,7 +12,7 @@ const createCollectionWithScope = (name) => {
     ...Collection,
     name: COLLECTION_NAME,
     setup() {
-      const collectionRef = ref(null);
+      const collectionRef = ref();
       const itemMap = /* @__PURE__ */ new Map();
       const getItems = () => {
         const collectionEl = unref(collectionRef);
@@ -33,7 +33,7 @@ const createCollectionWithScope = (name) => {
     ...CollectionItem,
     name: COLLECTION_ITEM_NAME,
     setup(_, { attrs }) {
-      const collectionItemRef = ref(null);
+      const collectionItemRef = ref();
       const collectionInjection = inject(COLLECTION_INJECTION_KEY, void 0);
       provide(COLLECTION_ITEM_INJECTION_KEY, {
         collectionItemRef

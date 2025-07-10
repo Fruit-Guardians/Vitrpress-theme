@@ -1,15 +1,14 @@
 import type { Dayjs } from 'dayjs';
-import type { GetDisabledHoursState, GetDisabledMinutesState, GetDisabledSecondsState } from '../types';
-import type { GetDisabledHours, GetDisabledMinutes, GetDisabledSeconds } from '../props/shared';
+import type { GetDisabledHours, GetDisabledMinutes, GetDisabledSeconds } from '../common/props';
 export declare const getTimeLists: (disabledHours?: GetDisabledHours, disabledMinutes?: GetDisabledMinutes, disabledSeconds?: GetDisabledSeconds) => {
     getHoursList: (role: string, compare?: Dayjs) => boolean[];
     getMinutesList: (hour: number, role: string, compare?: Dayjs) => boolean[];
     getSecondsList: (hour: number, minute: number, role: string, compare?: Dayjs) => boolean[];
 };
 export declare const buildAvailableTimeSlotGetter: (disabledHours: GetDisabledHours, disabledMinutes: GetDisabledMinutes, disabledSeconds: GetDisabledSeconds) => {
-    getAvailableHours: GetDisabledHoursState;
-    getAvailableMinutes: GetDisabledMinutesState;
-    getAvailableSeconds: GetDisabledSecondsState;
+    getAvailableHours: GetDisabledHours;
+    getAvailableMinutes: GetDisabledMinutes;
+    getAvailableSeconds: GetDisabledSeconds;
 };
 export declare const useOldValue: (props: {
     parsedValue?: string | Dayjs | Dayjs[];

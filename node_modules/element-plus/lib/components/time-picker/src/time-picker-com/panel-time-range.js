@@ -5,6 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var vue = require('vue');
 var dayjs = require('dayjs');
 var lodashUnified = require('lodash-unified');
+var constants = require('../constants.js');
 var panelTimeRange = require('../props/panel-time-range.js');
 var useTimePanel = require('../composables/use-time-panel.js');
 var useTimePicker = require('../composables/use-time-picker.js');
@@ -35,7 +36,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const { t, lang } = index.useLocale();
     const nsTime = index$1.useNamespace("time");
     const nsPicker = index$1.useNamespace("picker");
-    const pickerBase = vue.inject("EP_PICKER_BASE");
+    const pickerBase = vue.inject(constants.PICKER_BASE_INJECTION_KEY);
     const {
       arrowControl,
       disabledHours,

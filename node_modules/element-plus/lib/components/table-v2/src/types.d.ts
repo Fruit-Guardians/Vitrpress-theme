@@ -1,6 +1,7 @@
 import type { CSSProperties, FunctionalComponent, RendererElement, RendererNode, VNode } from 'vue';
+import type { ColumnAlignment } from 'element-plus/es/constants';
 import type { FixedDir, SortOrder } from './constants';
-export type Alignment = 'left' | 'center' | 'right';
+export type Alignment = ColumnAlignment;
 export type FixedDirection = FixedDir;
 export type KeyType = string | number | symbol;
 /**

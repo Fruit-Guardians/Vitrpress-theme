@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import type { UserConfig } from 'vite'
 
 export default {
   resolve: {
@@ -15,4 +16,14 @@ export default {
       symbolId: 'svg-icon/[name]',
     }),
   ],
-}
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'ui': ['element-plus']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
+  }
+} as UserConfig

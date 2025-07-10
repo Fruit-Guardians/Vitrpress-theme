@@ -5,11 +5,16 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var vue = require('vue');
 var lodashUnified = require('lodash-unified');
 var token = require('./token.js');
+var option = require('./option.js');
 var strings = require('../../../utils/strings.js');
+var error = require('../../../utils/error.js');
 var shared = require('@vue/shared');
 
 function useOption(props, states) {
   const select = vue.inject(token.selectKey);
+  if (!select) {
+    error.throwError(option.COMPONENT_NAME, "usage: <el-select><el-option /></el-select/>");
+  }
   const selectGroup = vue.inject(token.selectGroupKey, { disabled: false });
   const itemSelected = vue.computed(() => {
     return contains(lodashUnified.castArray(select.props.modelValue), props.value);
@@ -24,7 +29,8 @@ function useOption(props, states) {
     }
   });
   const currentLabel = vue.computed(() => {
-    return props.label || (shared.isObject(props.value) ? "" : props.value);
+    var _a;
+    return (_a = props.label) != null ? _a : shared.isObject(props.value) ? "" : props.value;
   });
   const currentValue = vue.computed(() => {
     return props.value || props.label || "";
@@ -50,7 +56,7 @@ function useOption(props, states) {
   };
   const updateOption = (query) => {
     const regexp = new RegExp(strings.escapeStringRegexp(query), "i");
-    states.visible = regexp.test(currentLabel.value) || props.created;
+    states.visible = regexp.test(String(currentLabel.value)) || props.created;
   };
   vue.watch(() => currentLabel.value, () => {
     if (!props.created && !select.props.remote)
@@ -58,7 +64,8 @@ function useOption(props, states) {
   });
   vue.watch(() => props.value, (val, oldVal) => {
     const { remote, valueKey } = select.props;
-    if (val !== oldVal) {
+    const shouldUpdate = remote ? val !== oldVal : !lodashUnified.isEqual(val, oldVal);
+    if (shouldUpdate) {
       select.onOptionDestroy(oldVal, instance.proxy);
       select.onOptionCreate(instance.proxy);
     }

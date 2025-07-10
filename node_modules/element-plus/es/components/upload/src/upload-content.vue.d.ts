@@ -200,11 +200,11 @@ declare const __VLS_component: import("vue").DefineComponent<{
     readonly name: string;
     readonly onError: (err: import("./ajax.js").UploadAjaxError, rawFile: UploadRawFile) => void;
     readonly onProgress: (evt: import("./upload").UploadProgressEvent, rawFile: UploadRawFile) => void;
-    readonly action: string;
-    readonly withCredentials: boolean;
     readonly method: string;
-    readonly showFileList: import("element-plus/es/utils").EpPropMergeType<BooleanConstructor, unknown, unknown>;
+    readonly action: string;
     readonly accept: string;
+    readonly withCredentials: boolean;
+    readonly showFileList: import("element-plus/es/utils").EpPropMergeType<BooleanConstructor, unknown, unknown>;
     readonly fileList: import("./upload").UploadUserFile[];
     readonly autoUpload: import("element-plus/es/utils").EpPropMergeType<BooleanConstructor, unknown, unknown>;
     readonly listType: import("element-plus/es/utils").EpPropMergeType<StringConstructor, "picture" | "text" | "picture-card", unknown>;

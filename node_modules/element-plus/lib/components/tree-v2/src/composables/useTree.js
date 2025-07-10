@@ -9,20 +9,10 @@ var useFilter = require('./useFilter.js');
 var shared = require('@vue/shared');
 
 function useTree(props, emit) {
-  const expandedKeySet = vue.ref(new Set(props.defaultExpandedKeys));
+  const expandedKeySet = vue.ref(/* @__PURE__ */ new Set());
   const currentKey = vue.ref();
   const tree = vue.shallowRef();
   const listRef = vue.ref();
-  vue.watch(() => props.currentNodeKey, (key) => {
-    currentKey.value = key;
-  }, {
-    immediate: true
-  });
-  vue.watch(() => props.data, (data) => {
-    setData(data);
-  }, {
-    immediate: true
-  });
   const {
     isIndeterminate,
     isChecked,
@@ -96,6 +86,7 @@ function useTree(props, emit) {
         const children = getChildren(rawNode);
         node.disabled = getDisabled(rawNode);
         node.isLeaf = !children || children.length === 0;
+        node.expanded = expandedKeySet.value.has(value);
         if (children && children.length) {
           node.children = traverse(children, level + 1, node);
         }
@@ -155,6 +146,7 @@ function useTree(props, emit) {
       let node = nodeMap.get(k);
       while (node && !expandedKeys.has(node.key)) {
         expandedKeys.add(node.key);
+        node.expanded = true;
         node = node.parent;
       }
     });
@@ -166,7 +158,7 @@ function useTree(props, emit) {
     if (props.expandOnClickNode) {
       toggleExpand(node);
     }
-    if (props.showCheckbox && props.checkOnClickNode && !node.disabled) {
+    if (props.showCheckbox && (props.checkOnClickNode || node.isLeaf && props.checkOnClickLeaf) && !node.disabled) {
       toggleCheckbox(node, !isChecked(node), true);
     }
   }
@@ -190,18 +182,18 @@ function useTree(props, emit) {
         const treeNode = treeNodeMap.get(key);
         if (node && node.level === (treeNode == null ? void 0 : treeNode.level)) {
           keySet.delete(key);
+          treeNode.expanded = false;
         }
       });
     }
     keySet.add(node.key);
+    node.expanded = true;
     emit(virtualTree.NODE_EXPAND, node.data, node);
   }
   function collapseNode(node) {
     expandedKeySet.value.delete(node.key);
+    node.expanded = false;
     emit(virtualTree.NODE_COLLAPSE, node.data, node);
-  }
-  function isExpanded(node) {
-    return expandedKeySet.value.has(node.key);
   }
   function isDisabled(node) {
     return !!node.disabled;
@@ -223,7 +215,7 @@ function useTree(props, emit) {
     currentKey.value = key;
   }
   function setData(data) {
-    vue.nextTick(() => tree.value = createTree(data));
+    tree.value = createTree(data);
   }
   function getNode(data) {
     var _a;
@@ -240,6 +232,21 @@ function useTree(props, emit) {
     var _a;
     (_a = listRef.value) == null ? void 0 : _a.scrollTo(offset);
   }
+  vue.watch(() => props.currentNodeKey, (key) => {
+    currentKey.value = key;
+  }, {
+    immediate: true
+  });
+  vue.watch(() => props.defaultExpandedKeys, (key) => {
+    expandedKeySet.value = new Set(key);
+  }, {
+    immediate: true
+  });
+  vue.watch(() => props.data, (data) => {
+    setData(data);
+  }, {
+    immediate: true
+  });
   return {
     tree,
     flattenTree,
@@ -249,7 +256,6 @@ function useTree(props, emit) {
     getChildren,
     toggleExpand,
     toggleCheckbox,
-    isExpanded,
     isChecked,
     isIndeterminate,
     isDisabled,

@@ -1,4 +1,5 @@
 import { getCurrentInstance, unref, nextTick } from 'vue';
+import { isNull } from 'lodash-unified';
 import useWatcher from './watcher.mjs';
 import { useNamespace } from '../../../../hooks/use-namespace/index.mjs';
 
@@ -38,7 +39,6 @@ function useStore() {
       instance.store.updateTreeData(instance.store.states.defaultExpandAll.value);
       if (unref(states.reserveSelection)) {
         instance.store.assertRowKey();
-        instance.store.updateSelectionByRowKey();
       } else {
         if (dataInstanceChanged) {
           instance.store.clearSelection();
@@ -52,6 +52,7 @@ function useStore() {
       }
     },
     insertColumn(states, column, parent, updateColumnOrder) {
+      var _a;
       const array = unref(states._columns);
       let newColumns = [];
       if (!parent) {
@@ -61,7 +62,7 @@ function useStore() {
         if (parent && !parent.children) {
           parent.children = [];
         }
-        parent.children.push(column);
+        (_a = parent.children) == null ? void 0 : _a.push(column);
         newColumns = replaceColumn(array, parent);
       }
       sortColumn(newColumns);
@@ -87,12 +88,13 @@ function useStore() {
       }
     },
     removeColumn(states, column, parent, updateColumnOrder) {
+      var _a;
       const array = unref(states._columns) || [];
       if (parent) {
-        parent.children.splice(parent.children.findIndex((item) => item.id === column.id), 1);
+        (_a = parent.children) == null ? void 0 : _a.splice(parent.children.findIndex((item) => item.id === column.id), 1);
         nextTick(() => {
-          var _a;
-          if (((_a = parent.children) == null ? void 0 : _a.length) === 0) {
+          var _a2;
+          if (((_a2 = parent.children) == null ? void 0 : _a2.length) === 0) {
             delete parent.children;
           }
         });
@@ -125,7 +127,7 @@ function useStore() {
     changeSortCondition(states, options) {
       const { sortingColumn, sortProp, sortOrder } = states;
       const columnValue = unref(sortingColumn), propValue = unref(sortProp), orderValue = unref(sortOrder);
-      if (orderValue === null) {
+      if (isNull(orderValue)) {
         states.sortingColumn.value = null;
         states.sortProp.value = null;
       }
@@ -150,7 +152,8 @@ function useStore() {
       instance.store.updateTableScrollY();
     },
     toggleAllSelection() {
-      instance.store.toggleAllSelection();
+      var _a, _b;
+      (_b = (_a = instance.store).toggleAllSelection) == null ? void 0 : _b.call(_a);
     },
     rowSelectedChanged(_states, row) {
       instance.store.toggleRowSelection(row);
@@ -166,7 +169,10 @@ function useStore() {
   const commit = function(name, ...args) {
     const mutations2 = instance.store.mutations;
     if (mutations2[name]) {
-      mutations2[name].apply(instance, [instance.store.states].concat(args));
+      mutations2[name].apply(instance, [
+        instance.store.states,
+        ...args
+      ]);
     } else {
       throw new Error(`Action not found: ${name}`);
     }

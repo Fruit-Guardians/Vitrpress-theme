@@ -19,7 +19,7 @@ const _sfc_main = defineComponent({
     const currentTabbedId = ref((_a = props.currentTabId || props.defaultCurrentTabId) != null ? _a : null);
     const isBackingOut = ref(false);
     const isClickFocus = ref(false);
-    const rovingFocusGroupRef = ref(null);
+    const rovingFocusGroupRef = ref();
     const { getItems } = inject(COLLECTION_INJECTION_KEY, void 0);
     const rovingFocusGroupRootStyle = computed(() => {
       return [

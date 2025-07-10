@@ -1,4 +1,4 @@
-import { defineComponent, reactive, toRefs, openBlock, createElementBlock, normalizeClass, unref, normalizeStyle, createVNode, withCtx, createElementVNode, toDisplayString } from 'vue';
+import { defineComponent, reactive, computed, toRefs, openBlock, createElementBlock, normalizeClass, unref, normalizeStyle, createVNode, withCtx, createElementVNode, toDisplayString } from 'vue';
 import { ElTooltip } from '../../tooltip/index.mjs';
 import { sliderButtonProps, sliderButtonEmits } from './button.mjs';
 import _export_sfc from '../../../_virtual/plugin-vue_export-helper.mjs';
@@ -27,11 +27,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       newPosition: 0,
       oldValue: props.modelValue
     });
+    const tooltipPersistent = computed(() => !showTooltip.value ? false : persistent.value);
     const {
       disabled,
       button,
       tooltip,
       showTooltip,
+      persistent,
       tooltipVisible,
       wrapperStyle,
       formatValue,
@@ -72,7 +74,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
           "stop-popper-mouse-event": false,
           "popper-class": _ctx.tooltipClass,
           disabled: !unref(showTooltip),
-          persistent: unref(showTooltip)
+          persistent: unref(tooltipPersistent)
         }, {
           content: withCtx(() => [
             createElementVNode("span", null, toDisplayString(unref(formatValue)), 1)

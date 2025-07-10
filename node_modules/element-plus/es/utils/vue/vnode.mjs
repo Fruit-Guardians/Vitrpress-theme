@@ -1,6 +1,6 @@
 import { isVNode, Fragment, Text, Comment, openBlock, createBlock, createCommentVNode } from 'vue';
-import { debugWarn } from '../error.mjs';
 import { isArray, hasOwn, camelize } from '@vue/shared';
+import { debugWarn } from '../error.mjs';
 
 const SCOPE = "utils/vue/vnode";
 var PatchFlags = /* @__PURE__ */ ((PatchFlags2) => {
@@ -91,6 +91,8 @@ const flattedChildren = (children) => {
       result.push(child, ...flattedChildren(child.component.subTree));
     } else if (isVNode(child) && isArray(child.children)) {
       result.push(...flattedChildren(child.children));
+    } else if (isVNode(child) && child.shapeFlag === 2) {
+      result.push(...flattedChildren(child.type()));
     } else {
       result.push(child);
     }

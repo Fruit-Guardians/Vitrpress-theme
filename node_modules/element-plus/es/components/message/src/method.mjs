@@ -37,6 +37,9 @@ const normalizeOptions = (params) => {
   if (isBoolean(messageConfig.showClose) && !normalized.showClose) {
     normalized.showClose = messageConfig.showClose;
   }
+  if (isBoolean(messageConfig.plain) && !normalized.plain) {
+    normalized.plain = messageConfig.plain;
+  }
   return normalized;
 };
 const closeMessage = (instance) => {
@@ -71,7 +74,7 @@ const createMessage = ({ appendTo, ...options }, context) => {
   const vm = vnode.component;
   const handler = {
     close: () => {
-      vm.exposed.visible.value = false;
+      vm.exposed.close();
     }
   };
   const instance = {
@@ -112,7 +115,8 @@ messageTypes.forEach((type) => {
   };
 });
 function closeAll(type) {
-  for (const instance of instances) {
+  const instancesToClose = [...instances];
+  for (const instance of instancesToClose) {
     if (!type || type === instance.props.type) {
       instance.handler.close();
     }

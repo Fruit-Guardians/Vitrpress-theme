@@ -9,6 +9,10 @@ const tabBarProps = runtime.buildProps({
   tabs: {
     type: runtime.definePropType(Array),
     default: () => typescript.mutable([])
+  },
+  tabRefs: {
+    type: runtime.definePropType(Object),
+    default: () => typescript.mutable({})
   }
 });
 

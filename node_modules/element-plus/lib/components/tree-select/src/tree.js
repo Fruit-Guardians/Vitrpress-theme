@@ -17,7 +17,7 @@ const useTree = (props, { attrs, slots, emit }, {
   tree,
   key
 }) => {
-  vue.watch(() => props.modelValue, () => {
+  vue.watch([() => props.modelValue, tree], () => {
     if (props.showCheckbox) {
       vue.nextTick(() => {
         const treeInstance = tree.value;

@@ -7,8 +7,7 @@ app/
 ├── config.py
 └── templates/
     └── index.html
-```
-
+```text
 ---
 
 `app.py`
@@ -134,5 +133,4 @@ if __name__ == '__main__':
     # 启动定时任务调度器
     scheduler.start()
     app.run(host='0.0.0.0', port=5100)
-```
-
+```text

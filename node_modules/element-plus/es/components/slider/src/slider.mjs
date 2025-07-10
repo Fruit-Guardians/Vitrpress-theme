@@ -79,6 +79,10 @@ const sliderProps = buildProps({
     type: Boolean,
     default: true
   },
+  persistent: {
+    type: Boolean,
+    default: true
+  },
   ...useAriaProps(["ariaLabel"])
 });
 const isValidValue = (value) => isNumber(value) || isArray(value) && value.every(isNumber);

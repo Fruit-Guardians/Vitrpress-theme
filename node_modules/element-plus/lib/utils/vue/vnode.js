@@ -3,8 +3,8 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
-var error = require('../error.js');
 var shared = require('@vue/shared');
+var error = require('../error.js');
 
 const SCOPE = "utils/vue/vnode";
 var PatchFlags = /* @__PURE__ */ ((PatchFlags2) => {
@@ -95,6 +95,8 @@ const flattedChildren = (children) => {
       result.push(child, ...flattedChildren(child.component.subTree));
     } else if (vue.isVNode(child) && shared.isArray(child.children)) {
       result.push(...flattedChildren(child.children));
+    } else if (vue.isVNode(child) && child.shapeFlag === 2) {
+      result.push(...flattedChildren(child.type()));
     } else {
       result.push(child);
     }

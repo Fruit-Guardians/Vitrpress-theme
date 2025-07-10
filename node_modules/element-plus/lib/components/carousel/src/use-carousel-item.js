@@ -90,24 +90,24 @@ const useCarouselItem = (props) => {
       carouselContext.setActiveItem(index);
     }
   }
-  vue.onMounted(() => {
-    carouselContext.addItem({
-      props,
-      states: vue.reactive({
-        hover,
-        translate,
-        scale,
-        active,
-        ready,
-        inStage,
-        animating
-      }),
-      uid: instance.uid,
-      translateItem
-    });
-  });
-  vue.onUnmounted(() => {
-    carouselContext.removeItem(instance.uid);
+  const carouselItemContext = {
+    props,
+    states: vue.reactive({
+      hover,
+      translate,
+      scale,
+      active,
+      ready,
+      inStage,
+      animating
+    }),
+    uid: instance.uid,
+    getVnode: () => instance.vnode,
+    translateItem
+  };
+  carouselContext.addItem(carouselItemContext);
+  vue.onBeforeUnmount(() => {
+    carouselContext.removeItem(carouselItemContext);
   });
   return {
     carouselItemRef,

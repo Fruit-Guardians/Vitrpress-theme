@@ -1,4 +1,5 @@
 import { getCurrentInstance, ref, unref } from 'vue';
+import { isNull } from 'lodash-unified';
 import { getRowIdentity } from '../util.mjs';
 
 function useCurrent(watcherData) {
@@ -14,12 +15,13 @@ function useCurrent(watcherData) {
     _currentRowKey.value = null;
   };
   const setCurrentRowByKey = (key) => {
+    var _a;
     const { data, rowKey } = watcherData;
     let _currentRow = null;
     if (rowKey.value) {
-      _currentRow = (unref(data) || []).find((item) => getRowIdentity(item, rowKey.value) === key);
+      _currentRow = (_a = (unref(data) || []).find((item) => getRowIdentity(item, rowKey.value) === key)) != null ? _a : null;
     }
-    currentRow.value = _currentRow;
+    currentRow.value = _currentRow != null ? _currentRow : null;
     instance.emit("current-change", currentRow.value, null);
   };
   const updateCurrentRow = (_currentRow) => {
@@ -38,14 +40,14 @@ function useCurrent(watcherData) {
     const rowKey = watcherData.rowKey.value;
     const data = watcherData.data.value || [];
     const oldCurrentRow = currentRow.value;
-    if (!data.includes(oldCurrentRow) && oldCurrentRow) {
+    if (oldCurrentRow && !data.includes(oldCurrentRow)) {
       if (rowKey) {
         const currentRowKey = getRowIdentity(oldCurrentRow, rowKey);
         setCurrentRowByKey(currentRowKey);
       } else {
         currentRow.value = null;
       }
-      if (currentRow.value === null) {
+      if (isNull(currentRow.value)) {
         instance.emit("current-change", null, oldCurrentRow);
       }
     } else if (_currentRowKey.value) {

@@ -28,14 +28,21 @@ const useCollapseItem = (props) => {
       }
     }, 50);
   };
-  const handleHeaderClick = () => {
+  const handleHeaderClick = (e) => {
     if (props.disabled)
+      return;
+    const target = e.target;
+    if (target == null ? void 0 : target.closest("input, textarea, select"))
       return;
     collapse == null ? void 0 : collapse.handleItemClick(vue.unref(name));
     focusing.value = false;
     isClick.value = true;
   };
-  const handleEnterClick = () => {
+  const handleEnterClick = (e) => {
+    const target = e.target;
+    if (target == null ? void 0 : target.closest("input, textarea, select"))
+      return;
+    e.preventDefault();
     collapse == null ? void 0 : collapse.handleItemClick(vue.unref(name));
   };
   return {
@@ -63,11 +70,13 @@ const useCollapseItemDOM = (props, { focusing, isActive, id }) => {
     ns.be("item", "arrow"),
     ns.is("active", vue.unref(isActive))
   ]);
+  const itemTitleKls = vue.computed(() => [ns.be("item", "title")]);
   const itemWrapperKls = vue.computed(() => ns.be("item", "wrap"));
   const itemContentKls = vue.computed(() => ns.be("item", "content"));
   const scopedContentId = vue.computed(() => ns.b(`content-${vue.unref(id)}`));
   const scopedHeadId = vue.computed(() => ns.b(`head-${vue.unref(id)}`));
   return {
+    itemTitleKls,
     arrowKls,
     headKls,
     rootKls,

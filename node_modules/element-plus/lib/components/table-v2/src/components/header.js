@@ -5,6 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var vue = require('vue');
 var header = require('../header.js');
 var utils = require('../utils.js');
+var tokens = require('../tokens.js');
 var index = require('../../../../hooks/use-namespace/index.js');
 var lodashUnified = require('lodash-unified');
 
@@ -17,7 +18,7 @@ const TableV2Header = vue.defineComponent({
     expose
   }) {
     const ns = index.useNamespace("table-v2");
-    const scrollLeftInfo = vue.inject("tableV2GridScrollLeft");
+    const scrollLeftInfo = vue.inject(tokens.TABLE_V2_GRID_INJECTION_KEY);
     const headerRef = vue.ref();
     const headerStyle = vue.computed(() => utils.enforceUnit({
       width: props.width,

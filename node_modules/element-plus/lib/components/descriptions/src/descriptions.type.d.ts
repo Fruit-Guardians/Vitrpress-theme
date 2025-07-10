@@ -1,4 +1,4 @@
-import type { ComponentSize } from 'element-plus/es/constants';
+import type { ColumnAlignment, ComponentSize } from 'element-plus/es/constants';
 export interface IDescriptionsInject {
     border: boolean;
     column: number;
@@ -15,8 +15,8 @@ export interface IDescriptionsItemInject {
     width: string | number;
     minWidth: string | number;
     labelWidth: string | number;
-    align: string;
-    labelAlign: string;
+    align: ColumnAlignment;
+    labelAlign?: ColumnAlignment;
     className: string;
     labelClassName: string;
 }

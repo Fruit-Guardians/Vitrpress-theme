@@ -55,8 +55,7 @@ docker pull bx33661/btools:latest
 
 # 运行容器
 docker run -d -p 5000:5000 --name btools-web bx33661/btools:latest
-```
-
+```text
 使用 docker-compose 部署：
 
 ```bash
@@ -77,8 +76,7 @@ services:
 
 # 2. 启动服务
 docker-compose up -d
-```
-
+```text
 ### 方式二：传统部署
 
 1. 克隆仓库并安装依赖：
@@ -90,15 +88,13 @@ cd BTools
 
 # 安装依赖
 pip install -r requirements.txt
-```
-
+```text
 2. 运行应用：
 
 ```bash
 cd web/app
 python app.py
-```
-
+```text
 ### 方式三：自行构建 Docker 镜像
 
 ```bash
@@ -111,8 +107,7 @@ docker build -t btools:latest .
 
 # 运行容器
 docker run -d -p 5000:5000 --name btools-web btools:latest
-```
-
+```text
 ## 使用说明
 
 访问 5000端口 即可使用所有功能。
@@ -156,7 +151,7 @@ docker run -d -p 5000:5000 --name btools-web btools:latest
 
 ## 项目结构
 
-```
+```text
 BTools/
 ├── README.md                 # 项目说明文档
 ├── requirements.txt          # 全局依赖
@@ -194,8 +189,7 @@ BTools/
             ├── find_utils.py    # 文件查找工具
             ├── bs_utils.py      # Base64处理工具
             └── monitor_utils.py # 监控工具
-```
-
+```text
 ### 主要目录说明：
 
 - `/web/app/`: Flask应用主目录

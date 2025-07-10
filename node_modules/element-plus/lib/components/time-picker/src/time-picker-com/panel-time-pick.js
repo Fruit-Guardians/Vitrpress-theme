@@ -4,6 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
 var dayjs = require('dayjs');
+var constants = require('../constants.js');
 var panelTimePicker = require('../props/panel-time-picker.js');
 var useTimePanel = require('../composables/use-time-panel.js');
 var useTimePicker = require('../composables/use-time-picker.js');
@@ -24,7 +25,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
   emits: ["pick", "select-range", "set-picker-option"],
   setup(__props, { emit }) {
     const props = __props;
-    const pickerBase = vue.inject("EP_PICKER_BASE");
+    const pickerBase = vue.inject(constants.PICKER_BASE_INJECTION_KEY);
     const {
       arrowControl,
       disabledHours,

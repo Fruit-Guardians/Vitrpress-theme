@@ -89,6 +89,12 @@ var ElDescriptionsCell = vue.defineComponent({
         }, renderContent()), directives);
       default: {
         const label = renderLabel();
+        const labelStyle = {};
+        const width2 = style.addUnit(item.labelWidth || this.descriptions.labelWidth);
+        if (width2) {
+          labelStyle.width = width2;
+          labelStyle.display = "inline-block";
+        }
         return vue.withDirectives(vue.h("td", {
           style: style$1,
           class: [ns.e("cell"), align],
@@ -96,6 +102,7 @@ var ElDescriptionsCell = vue.defineComponent({
           rowspan
         }, [
           !lodashUnified.isNil(label) ? vue.h("span", {
+            style: labelStyle,
             class: [ns.e("label"), labelClassName]
           }, label) : void 0,
           vue.h("span", {

@@ -1,24 +1,17 @@
-import type { Ref } from 'vue';
-export interface IStepsProps {
-    space: number | string;
-    active: number;
-    direction: string;
-    alignCenter: boolean;
-    simple: boolean;
-    finishStatus: string;
-    processStatus: string;
-}
+import type { Ref, VNode } from 'vue';
+import type { StepsProps } from './steps';
 export interface StepItemState {
     uid: number;
+    getVnode: () => VNode;
     currentStatus: string;
     setIndex: (val: number) => void;
     calcProgress: (status: string) => void;
 }
 export interface IStepsInject {
-    props: IStepsProps;
+    props: StepsProps;
     steps: Ref<StepItemState[]>;
     addStep: (item: StepItemState) => void;
-    removeStep: (uid: number) => void;
+    removeStep: (item: StepItemState) => void;
 }
 declare function __VLS_template(): {
     icon?(_: {}): any;

@@ -83,6 +83,10 @@ const sliderProps = runtime.buildProps({
     type: Boolean,
     default: true
   },
+  persistent: {
+    type: Boolean,
+    default: true
+  },
   ...index$1.useAriaProps(["ariaLabel"])
 });
 const isValidValue = (value) => types.isNumber(value) || shared.isArray(value) && value.every(types.isNumber);

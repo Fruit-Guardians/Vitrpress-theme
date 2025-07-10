@@ -98,6 +98,13 @@ const useTableGrid = (props) => {
     (_a = vue.unref(bodyRef)) == null ? void 0 : _a.$forceUpdate();
     (_b = vue.unref(headerRef)) == null ? void 0 : _b.$forceUpdate();
   }
+  vue.watch(() => props.bodyWidth, () => {
+    var _a;
+    if (types.isNumber(props.estimatedRowHeight))
+      (_a = bodyRef.value) == null ? void 0 : _a.resetAfter({
+        columnIndex: 0
+      }, false);
+  });
   return {
     bodyRef,
     forceUpdate,
@@ -143,7 +150,13 @@ const TableGrid = vue.defineComponent({
       scrollToRow,
       scrollLeft
     } = useTableGrid(props);
-    vue.provide("tableV2GridScrollLeft", scrollLeft);
+    vue.provide(tokens.TABLE_V2_GRID_INJECTION_KEY, scrollLeft);
+    vue.onActivated(async () => {
+      var _a;
+      await vue.nextTick();
+      const scrollTop = (_a = bodyRef.value) == null ? void 0 : _a.states.scrollTop;
+      scrollTop && scrollToTop(Math.round(scrollTop) + 1);
+    });
     expose({
       forceUpdate,
       totalHeight,

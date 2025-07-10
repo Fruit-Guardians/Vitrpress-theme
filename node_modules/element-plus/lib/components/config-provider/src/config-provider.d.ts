@@ -17,7 +17,13 @@ declare const ConfigProvider: import("vue").DefineComponent<{
         __epPropKey: true;
     };
     readonly button: {
-        readonly type: import("vue").PropType<import("element-plus/es/element-plus").ButtonConfigContext>;
+        readonly type: import("vue").PropType<import("element-plus").ButtonConfigContext>;
+        readonly required: false;
+        readonly validator: ((val: unknown) => boolean) | undefined;
+        __epPropKey: true;
+    };
+    readonly link: {
+        readonly type: import("vue").PropType<import("element-plus").LinkConfigContext>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
@@ -56,7 +62,13 @@ declare const ConfigProvider: import("vue").DefineComponent<{
         __epPropKey: true;
     };
     readonly button: {
-        readonly type: import("vue").PropType<import("element-plus/es/element-plus").ButtonConfigContext>;
+        readonly type: import("vue").PropType<import("element-plus").ButtonConfigContext>;
+        readonly required: false;
+        readonly validator: ((val: unknown) => boolean) | undefined;
+        __epPropKey: true;
+    };
+    readonly link: {
+        readonly type: import("vue").PropType<import("element-plus").LinkConfigContext>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
@@ -82,5 +94,5 @@ declare const ConfigProvider: import("vue").DefineComponent<{
     readonly keyboardNavigation: import("element-plus/es/utils").EpPropMergeType<BooleanConstructor, unknown, unknown>;
     readonly namespace: string;
 }>;
-export type ConfigProviderInstance = InstanceType<typeof ConfigProvider>;
+export type ConfigProviderInstance = InstanceType<typeof ConfigProvider> & unknown;
 export default ConfigProvider;

@@ -17,7 +17,9 @@ const component = vue.defineComponent({
       }
     });
     vue.watch(() => ctx.attrs.visible, (val) => {
-      result.states.visible = val;
+      vue.nextTick(() => {
+        result.states.visible = val;
+      });
     }, {
       immediate: true
     });

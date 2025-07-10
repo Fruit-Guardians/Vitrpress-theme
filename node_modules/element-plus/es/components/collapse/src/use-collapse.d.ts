@@ -4,6 +4,6 @@ export declare const useCollapse: (props: CollapseProps, emit: SetupContext<Coll
     activeNames: import("vue").Ref<(string | number)[]>;
     setActiveNames: (_activeNames: CollapseActiveName[]) => void;
 };
-export declare const useCollapseDOM: () => {
-    rootKls: import("vue").ComputedRef<string>;
+export declare const useCollapseDOM: (props: CollapseProps) => {
+    rootKls: import("vue").ComputedRef<string[]>;
 };

@@ -25,6 +25,8 @@ const useSelect = (props, { attrs, emit }, {
   const result = {
     ...lodashUnified.pick(vue.toRefs(props), Object.keys(index$1.ElSelect.props)),
     ...attrs,
+    class: vue.computed(() => attrs.class),
+    style: vue.computed(() => attrs.style),
     "onUpdate:modelValue": (value) => emit(event.UPDATE_MODEL_EVENT, value),
     valueKey: key,
     popperClass: vue.computed(() => {

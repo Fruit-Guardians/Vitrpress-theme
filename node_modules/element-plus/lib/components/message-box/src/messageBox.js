@@ -70,7 +70,11 @@ const showMessage = (options, appContext) => {
   const vm = instance.proxy;
   for (const prop in options) {
     if (shared.hasOwn(options, prop) && !shared.hasOwn(vm.$props, prop)) {
-      vm[prop] = options[prop];
+      if (prop === "closeIcon" && shared.isObject(options[prop])) {
+        vm[prop] = vue.markRaw(options[prop]);
+      } else {
+        vm[prop] = options[prop];
+      }
     }
   }
   vm.visible = true;

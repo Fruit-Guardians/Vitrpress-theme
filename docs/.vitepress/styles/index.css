@@ -1,6 +1,172 @@
 @import "./tailwindcss.css";
 
 :root {
-  /* --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, theme('colors.purple.500'), theme('colors.green.500')); */
+  /* 现代化色彩系统 */
+  --vp-c-brand: #6366f1;
+  --vp-c-brand-light: #818cf8;
+  --vp-c-brand-lighter: #a5b4fc;
+  --vp-c-brand-dark: #4f46e5;
+  --vp-c-brand-darker: #3730a3;
+  
+  /* 渐变背景 */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #6366f1, #8b5cf6, #06b6d4);
+  --vp-home-hero-name-background-clip: text;
+  
+  /* 现代化阴影 */
+  --vp-shadow-1: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --vp-shadow-2: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --vp-shadow-3: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  
+  /* 圆角 */
+  --vp-border-radius: 12px;
+  
+  /* 动画时长 */
+  --vp-transition-duration: 0.3s;
+}
+
+/* 现代化滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(156 163 175 / 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(156 163 175 / 0.8);
+}
+
+/* 现代化卡片样式 */
+.VPHome .container .main .VPHomeHero .container .text .tagline {
+  background: linear-gradient(120deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+
+/* 按钮悬停效果 */
+.VPButton {
+  transition: all var(--vp-transition-duration) ease;
+}
+
+.VPButton:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--vp-shadow-3);
+}
+
+/* 导航栏现代化 */
+.VPNav {
+  backdrop-filter: blur(12px);
+  background: rgb(255 255 255 / 0.8);
+  border-bottom: 1px solid rgb(229 231 235 / 0.5);
+}
+
+/* 侧边栏现代化 */
+.VPSidebar {
+  background: rgb(249 250 251 / 0.95);
+  backdrop-filter: blur(12px);
+}
+
+/* 代码块现代化 */
+.VPCodeGroup .tabs {
+  border-radius: var(--vp-border-radius);
+  overflow: hidden;
+}
+
+.VPCodeGroup .tabs .tab {
+  transition: all var(--vp-transition-duration) ease;
+}
+
+.VPCodeGroup .tabs .tab:hover {
+  background: rgb(99 102 241 / 0.1);
+}
+
+/* 现代化链接样式 */
+.VPDoc .content .content-container .main .vp-doc a {
+  color: var(--vp-c-brand);
+  text-decoration: none;
+  transition: all var(--vp-transition-duration) ease;
+}
+
+.VPDoc .content .content-container .main .vp-doc a:hover {
+  color: var(--vp-c-brand-light);
+  text-decoration: underline;
+}
+
+/* 现代化表格样式 */
+.VPDoc .content .content-container .main .vp-doc table {
+  border-radius: var(--vp-border-radius);
+  overflow: hidden;
+  box-shadow: var(--vp-shadow-2);
+}
+
+/* 现代化引用块样式 */
+.VPDoc .content .content-container .main .vp-doc blockquote {
+  border-left: 4px solid var(--vp-c-brand);
+  background: rgb(99 102 241 / 0.05);
+  border-radius: 0 var(--vp-border-radius) var(--vp-border-radius) 0;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .VPHome .container .main .VPHomeHero .container .text .title {
+    font-size: 2rem !important;
+  }
+  
+  .VPHome .container .main .VPHomeHero .container .text .tagline {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* 暗色模式支持 */
+.dark {
+  --vp-c-brand: #818cf8;
+  --vp-c-brand-light: #a5b4fc;
+  --vp-c-brand-lighter: #c7d2fe;
+  --vp-c-brand-dark: #6366f1;
+  --vp-c-brand-darker: #4f46e5;
+}
+
+.dark .VPNav {
+  background: rgb(17 24 39 / 0.8);
+  border-bottom: 1px solid rgb(55 65 81 / 0.5);
+}
+
+.dark .VPSidebar {
+  background: rgb(17 24 39 / 0.95);
+}
+
+/* 现代化动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.VPHome .container .main .VPHomeHero {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* 现代化卡片悬停效果 */
+.VPHome .container .main .VPHomeFeatures .container .items .item {
+  transition: all var(--vp-transition-duration) ease;
+}
+
+.VPHome .container .main .VPHomeFeatures .container .items .item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--vp-shadow-3);
 }

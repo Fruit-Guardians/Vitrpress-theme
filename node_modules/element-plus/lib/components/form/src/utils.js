@@ -4,6 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
 var lodashUnified = require('lodash-unified');
+var shared = require('@vue/shared');
 var error = require('../../../utils/error.js');
 
 const SCOPE = "ElForm";
@@ -43,8 +44,8 @@ function useFormLabelWidth() {
   };
 }
 const filterFields = (fields, props) => {
-  const normalized = lodashUnified.castArray(props);
-  return normalized.length > 0 ? fields.filter((field) => field.prop && normalized.includes(field.prop)) : fields;
+  const normalized = lodashUnified.castArray(props).map((prop) => shared.isArray(prop) ? prop.join(".") : prop);
+  return normalized.length > 0 ? fields.filter((field) => field.propString && normalized.includes(field.propString)) : fields;
 };
 
 exports.filterFields = filterFields;

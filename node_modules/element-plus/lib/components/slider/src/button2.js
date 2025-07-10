@@ -31,11 +31,13 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       newPosition: 0,
       oldValue: props.modelValue
     });
+    const tooltipPersistent = vue.computed(() => !showTooltip.value ? false : persistent.value);
     const {
       disabled,
       button,
       tooltip,
       showTooltip,
+      persistent,
       tooltipVisible,
       wrapperStyle,
       formatValue,
@@ -76,7 +78,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
           "stop-popper-mouse-event": false,
           "popper-class": _ctx.tooltipClass,
           disabled: !vue.unref(showTooltip),
-          persistent: vue.unref(showTooltip)
+          persistent: vue.unref(tooltipPersistent)
         }, {
           content: vue.withCtx(() => [
             vue.createElementVNode("span", null, vue.toDisplayString(vue.unref(formatValue)), 1)

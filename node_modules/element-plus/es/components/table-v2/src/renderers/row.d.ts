@@ -5,7 +5,7 @@ import type { TableV2Props } from '../table';
 import type { TableGridRowSlotParams } from '../table-grid';
 type RowRendererProps = TableGridRowSlotParams & Pick<TableV2Props, 'expandColumnKey' | 'estimatedRowHeight' | 'rowProps' | 'rowClass' | 'rowKey' | 'rowEventHandlers'> & UnwrapNestedRefs<Pick<UseTableReturn, 'depthMap' | 'expandedRowKeys' | 'hasFixedColumns' | 'onRowHovered' | 'onRowExpanded' | 'columnsStyles'>> & {
     ns: UseNamespaceReturn;
-    tableInstance: null | ComponentInternalInstance;
+    tableInstance?: ComponentInternalInstance;
 };
 declare const RowRenderer: FunctionalComponent<RowRendererProps>;
 export default RowRenderer;

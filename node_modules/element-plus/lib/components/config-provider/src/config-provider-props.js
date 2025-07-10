@@ -18,6 +18,9 @@ const configProviderProps = runtime.buildProps({
   button: {
     type: runtime.definePropType(Object)
   },
+  link: {
+    type: runtime.definePropType(Object)
+  },
   experimentalFeatures: {
     type: runtime.definePropType(Object)
   },

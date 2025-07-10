@@ -21,6 +21,7 @@ const TypeComponents = {
   CircleCloseFilled: iconsVue.CircleCloseFilled
 };
 const TypeComponentsMap = {
+  primary: iconsVue.InfoFilled,
   success: iconsVue.SuccessFilled,
   warning: iconsVue.WarningFilled,
   error: iconsVue.CircleCloseFilled,

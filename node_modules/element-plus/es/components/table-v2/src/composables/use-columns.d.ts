@@ -21,7 +21,7 @@ declare function useColumns(props: TableV2Props, columns: Ref<AnyColumns>, fixed
         cellRenderer?: import("../types").CellRenderer<any> | undefined;
         headerCellRenderer?: import("../types").HeaderCellRenderer<any> | undefined;
     }[]>;
-    columnsStyles: import("vue").ComputedRef<Record<KeyType | undefined, CSSProperties>>;
+    columnsStyles: import("vue").ComputedRef<Record<KeyType, CSSProperties>>;
     columnsTotalWidth: import("vue").ComputedRef<number>;
     fixedColumnsOnLeft: import("vue").ComputedRef<{
         key: KeyType;

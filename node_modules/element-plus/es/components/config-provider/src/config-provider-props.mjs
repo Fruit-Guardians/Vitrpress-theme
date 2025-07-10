@@ -14,6 +14,9 @@ const configProviderProps = buildProps({
   button: {
     type: definePropType(Object)
   },
+  link: {
+    type: definePropType(Object)
+  },
   experimentalFeatures: {
     type: definePropType(Object)
   },

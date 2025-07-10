@@ -1,6 +1,8 @@
+import { useDelayedToggleProps } from '../../../hooks/use-delayed-toggle/index.mjs';
 import { TypeComponentsMap } from '../../../utils/vue/icon.mjs';
 import { buildProps } from '../../../utils/vue/props/runtime.mjs';
 import { keysOf } from '../../../utils/objects.mjs';
+import { isUndefined } from '../../../utils/types.mjs';
 
 const alertEffects = ["light", "dark"];
 const alertProps = buildProps({
@@ -31,10 +33,12 @@ const alertProps = buildProps({
     type: String,
     values: alertEffects,
     default: "light"
-  }
+  },
+  ...useDelayedToggleProps
 });
 const alertEmits = {
-  close: (evt) => evt instanceof MouseEvent
+  open: () => true,
+  close: (evt) => isUndefined(evt) || evt instanceof Event
 };
 
 export { alertEffects, alertEmits, alertProps };

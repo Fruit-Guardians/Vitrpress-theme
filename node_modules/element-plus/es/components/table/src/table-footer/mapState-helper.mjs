@@ -5,19 +5,24 @@ function useMapState() {
   const table = inject(TABLE_INJECTION_KEY);
   const store = table == null ? void 0 : table.store;
   const leftFixedLeafCount = computed(() => {
-    return store.states.fixedLeafColumnsLength.value;
+    var _a;
+    return (_a = store == null ? void 0 : store.states.fixedLeafColumnsLength.value) != null ? _a : 0;
   });
   const rightFixedLeafCount = computed(() => {
-    return store.states.rightFixedColumns.value.length;
+    var _a;
+    return (_a = store == null ? void 0 : store.states.rightFixedColumns.value.length) != null ? _a : 0;
   });
   const columnsCount = computed(() => {
-    return store.states.columns.value.length;
+    var _a;
+    return (_a = store == null ? void 0 : store.states.columns.value.length) != null ? _a : 0;
   });
   const leftFixedCount = computed(() => {
-    return store.states.fixedColumns.value.length;
+    var _a;
+    return (_a = store == null ? void 0 : store.states.fixedColumns.value.length) != null ? _a : 0;
   });
   const rightFixedCount = computed(() => {
-    return store.states.rightFixedColumns.value.length;
+    var _a;
+    return (_a = store == null ? void 0 : store.states.rightFixedColumns.value.length) != null ? _a : 0;
   });
   return {
     leftFixedLeafCount,
@@ -25,7 +30,10 @@ function useMapState() {
     columnsCount,
     leftFixedCount,
     rightFixedCount,
-    columns: store.states.columns
+    columns: computed(() => {
+      var _a;
+      return (_a = store == null ? void 0 : store.states.columns.value) != null ? _a : [];
+    })
   };
 }
 

@@ -1,15 +1,21 @@
 {
-  "background_color": "#fff",
-  "description": "开箱即用的Vite Press模板，快速搭建你的文档网站。",
-  "display": "fullscreen",
+  "background_color": "#ffffff",
+  "description": "Fruit-Guardians 现代化 VitePress 文档模板，专为开发者打造的美观、现代、易用的文档站点模板。",
+  "display": "standalone",
   "icons": [
     {
       "src": "/logo.png",
       "sizes": "192x192",
       "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
-  "name": "VitePress Template",
-  "short_name": "VitePress Template",
-  "start_url": "/index.html"
+  "name": "Fruit-Guardians Docs",
+  "short_name": "Fruit-Guardians",
+  "start_url": "/",
+  "theme_color": "#6366f1"
 }

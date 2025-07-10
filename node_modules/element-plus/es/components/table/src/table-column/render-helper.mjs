@@ -2,6 +2,7 @@ import { getCurrentInstance, ref, watchEffect, computed, unref, renderSlot, h, C
 import { cellForced, defaultRenderCell, treeCellPrefix, getDefaultClassName } from '../config.mjs';
 import { parseWidth, parseMinWidth } from '../util.mjs';
 import { useNamespace } from '../../../../hooks/use-namespace/index.mjs';
+import { isUndefined } from '../../../../utils/types.mjs';
 import { debugWarn } from '../../../../utils/error.mjs';
 import { isArray } from '@vue/shared';
 
@@ -49,7 +50,7 @@ function useRender(props, slots, owner) {
     if (!column.minWidth) {
       column.minWidth = 80;
     }
-    column.realWidth = Number(column.width === void 0 ? column.minWidth : column.width);
+    column.realWidth = Number(isUndefined(column.width) ? column.minWidth : column.width);
     return column;
   };
   const setColumnForcedProps = (column) => {
@@ -57,7 +58,7 @@ function useRender(props, slots, owner) {
     const source = cellForced[type] || {};
     Object.keys(source).forEach((prop) => {
       const value = source[prop];
-      if (prop !== "className" && value !== void 0) {
+      if (prop !== "className" && !isUndefined(value)) {
         column[prop] = value;
       }
     });
@@ -95,13 +96,18 @@ function useRender(props, slots, owner) {
         return renderSlot(slots, "filter-icon", scope);
       };
     }
+    if (slots.expand) {
+      column.renderExpand = (scope) => {
+        return renderSlot(slots, "expand", scope);
+      };
+    }
     let originRenderCell = column.renderCell;
     if (column.type === "expand") {
       column.renderCell = (data) => h("div", {
         class: "cell"
       }, [originRenderCell(data)]);
-      owner.value.renderExpanded = (data) => {
-        return slots.default ? slots.default(data) : slots.default;
+      owner.value.renderExpanded = (row) => {
+        return slots.default ? slots.default(row) : slots.default;
       };
     } else {
       originRenderCell = originRenderCell || defaultRenderCell;

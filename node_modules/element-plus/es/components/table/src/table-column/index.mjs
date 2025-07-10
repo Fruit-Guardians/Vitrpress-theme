@@ -40,12 +40,13 @@ var ElTableColumn = defineComponent({
       updateColumnOrder
     } = useRender(props, slots, owner);
     const parent = columnOrTableParent.value;
-    columnId.value = `${parent.tableId || parent.columnId}_column_${columnIdSeed++}`;
+    columnId.value = `${"tableId" in parent && parent.tableId || "columnId" in parent && parent.columnId}_column_${columnIdSeed++}`;
     onBeforeMount(() => {
       isSubColumn.value = owner.value !== parent;
       const type = props.type || "default";
       const sortable = props.sortable === "" ? true : props.sortable;
-      const showOverflowTooltip = isUndefined(props.showOverflowTooltip) ? parent.props.showOverflowTooltip : props.showOverflowTooltip;
+      const showOverflowTooltip = type === "selection" ? false : isUndefined(props.showOverflowTooltip) ? parent.props.showOverflowTooltip : props.showOverflowTooltip;
+      const tooltipFormatter = isUndefined(props.tooltipFormatter) ? parent.props.tooltipFormatter : props.tooltipFormatter;
       const defaults = {
         ...cellStarts[type],
         id: columnId.value,
@@ -54,6 +55,7 @@ var ElTableColumn = defineComponent({
         align: realAlign,
         headerAlign: realHeaderAlign,
         showOverflowTooltip,
+        tooltipFormatter,
         filterable: props.filters || props.filterMethod,
         filteredValue: [],
         filterPlacement: "",
@@ -96,18 +98,18 @@ var ElTableColumn = defineComponent({
       registerComplexWatchers();
     });
     onMounted(() => {
-      var _a;
+      var _a, _b;
       const parent2 = columnOrTableParent.value;
-      const children = isSubColumn.value ? parent2.vnode.el.children : (_a = parent2.refs.hiddenColumns) == null ? void 0 : _a.children;
+      const children = isSubColumn.value ? (_a = parent2.vnode.el) == null ? void 0 : _a.children : (_b = parent2.refs.hiddenColumns) == null ? void 0 : _b.children;
       const getColumnIndex = () => getColumnElIndex(children || [], instance.vnode.el);
       columnConfig.value.getColumnIndex = getColumnIndex;
       const columnIndex = getColumnIndex();
-      columnIndex > -1 && owner.value.store.commit("insertColumn", columnConfig.value, isSubColumn.value ? parent2.columnConfig.value : null, updateColumnOrder);
+      columnIndex > -1 && owner.value.store.commit("insertColumn", columnConfig.value, isSubColumn.value ? "columnConfig" in parent2 && parent2.columnConfig.value : null, updateColumnOrder);
     });
     onBeforeUnmount(() => {
       const getColumnIndex = columnConfig.value.getColumnIndex;
       const columnIndex = getColumnIndex ? getColumnIndex() : -1;
-      columnIndex > -1 && owner.value.store.commit("removeColumn", columnConfig.value, isSubColumn.value ? parent.columnConfig.value : null, updateColumnOrder);
+      columnIndex > -1 && owner.value.store.commit("removeColumn", columnConfig.value, isSubColumn.value ? "columnConfig" in parent && parent.columnConfig.value : null, updateColumnOrder);
     });
     instance.columnId = columnId.value;
     instance.columnConfig = columnConfig;

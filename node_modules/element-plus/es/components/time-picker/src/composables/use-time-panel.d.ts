@@ -1,9 +1,9 @@
 import type { Dayjs } from 'dayjs';
-import type { GetDisabledHoursState, GetDisabledMinutesState, GetDisabledSecondsState } from '../types';
+import type { GetDisabledHours, GetDisabledMinutes, GetDisabledSeconds } from '../common/props';
 type UseTimePanelProps = {
-    getAvailableHours: GetDisabledHoursState;
-    getAvailableMinutes: GetDisabledMinutesState;
-    getAvailableSeconds: GetDisabledSecondsState;
+    getAvailableHours: GetDisabledHours;
+    getAvailableMinutes: GetDisabledMinutes;
+    getAvailableSeconds: GetDisabledSeconds;
 };
 export declare const useTimePanel: ({ getAvailableHours, getAvailableMinutes, getAvailableSeconds, }: UseTimePanelProps) => {
     timePickerOptions: Record<string, (...args: any[]) => void>;

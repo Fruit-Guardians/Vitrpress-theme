@@ -1,0 +1,27 @@
+# Node
+node_modules/
+
+# VitePress
+.docs-cache/
+dist/
+.cache/
+
+# VSCode
+.vscode/
+
+# 日志
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 生产构建
+*.local
+
+# 其他
+.idea/
+*.swp 

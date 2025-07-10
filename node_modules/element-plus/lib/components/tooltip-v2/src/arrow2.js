@@ -2,46 +2,31 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var vue = require('vue');
-var constants = require('./constants.js');
-var arrow = require('./arrow.js');
-var pluginVue_exportHelper = require('../../../_virtual/plugin-vue_export-helper.js');
+var common = require('./common.js');
+var runtime = require('../../../utils/vue/props/runtime.js');
 
-const __default__ = vue.defineComponent({
-  name: "ElTooltipV2Arrow"
-});
-const _sfc_main = /* @__PURE__ */ vue.defineComponent({
-  ...__default__,
-  props: {
-    ...arrow.tooltipV2ArrowProps,
-    ...arrow.tooltipV2ArrowSpecialProps
+const tooltipV2ArrowProps = runtime.buildProps({
+  width: {
+    type: Number,
+    default: 10
   },
-  setup(__props) {
-    const props = __props;
-    const { ns } = vue.inject(constants.tooltipV2RootKey);
-    const { arrowRef } = vue.inject(constants.tooltipV2ContentKey);
-    const arrowStyle = vue.computed(() => {
-      const { style, width, height } = props;
-      const namespace = ns.namespace.value;
-      return {
-        [`--${namespace}-tooltip-v2-arrow-width`]: `${width}px`,
-        [`--${namespace}-tooltip-v2-arrow-height`]: `${height}px`,
-        [`--${namespace}-tooltip-v2-arrow-border-width`]: `${width / 2}px`,
-        [`--${namespace}-tooltip-v2-arrow-cover-width`]: width / 2 - 1,
-        ...style || {}
-      };
-    });
-    return (_ctx, _cache) => {
-      return vue.openBlock(), vue.createElementBlock("span", {
-        ref_key: "arrowRef",
-        ref: arrowRef,
-        style: vue.normalizeStyle(vue.unref(arrowStyle)),
-        class: vue.normalizeClass(vue.unref(ns).e("arrow"))
-      }, null, 6);
-    };
+  height: {
+    type: Number,
+    default: 10
+  },
+  style: {
+    type: runtime.definePropType(Object),
+    default: null
   }
 });
-var TooltipV2Arrow = /* @__PURE__ */ pluginVue_exportHelper["default"](_sfc_main, [["__file", "arrow.vue"]]);
+const tooltipV2ArrowSpecialProps = runtime.buildProps({
+  side: {
+    type: runtime.definePropType(String),
+    values: common.tooltipV2Sides,
+    required: true
+  }
+});
 
-exports["default"] = TooltipV2Arrow;
+exports.tooltipV2ArrowProps = tooltipV2ArrowProps;
+exports.tooltipV2ArrowSpecialProps = tooltipV2ArrowSpecialProps;
 //# sourceMappingURL=arrow2.js.map

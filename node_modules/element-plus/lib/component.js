@@ -79,6 +79,7 @@ var index$19 = require('./components/tour/index.js');
 var index$1a = require('./components/anchor/index.js');
 var index$1b = require('./components/segmented/index.js');
 var index$1c = require('./components/mention/index.js');
+var index$1d = require('./components/splitter/index.js');
 
 var Components = [
   index.ElAffix,
@@ -186,7 +187,9 @@ var Components = [
   index$1a.ElAnchor,
   index$1a.ElAnchorLink,
   index$1b.ElSegmented,
-  index$1c.ElMention
+  index$1c.ElMention,
+  index$1d.ElSplitter,
+  index$1d.ElSplitterPanel
 ];
 
 exports["default"] = Components;

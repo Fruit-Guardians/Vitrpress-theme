@@ -28,7 +28,7 @@ declare function useTable(props: TableV2Props): {
     isResetting: import("vue").ShallowRef<boolean>;
     isScrolling: import("vue").ShallowRef<boolean>;
     hasFixedColumns: import("vue").ComputedRef<number>;
-    columnsStyles: import("vue").ComputedRef<Record<import("./types").KeyType | undefined, import("vue").CSSProperties>>;
+    columnsStyles: import("vue").ComputedRef<Record<import("./types").KeyType, import("vue").CSSProperties>>;
     columnsTotalWidth: import("vue").ComputedRef<number>;
     data: import("vue").ComputedRef<any[]>;
     expandedRowKeys: import("vue").Ref<import("./types").KeyType[]>;
@@ -75,7 +75,6 @@ declare function useTable(props: TableV2Props): {
     bodyWidth: import("vue").ComputedRef<number>;
     emptyStyle: import("vue").ComputedRef<import("vue").CSSProperties>;
     rootStyle: import("vue").ComputedRef<import("vue").CSSProperties>;
-    headerWidth: import("vue").ComputedRef<number>;
     footerHeight: import("vue").ComputedRef<import("vue").CSSProperties>;
     mainTableHeight: import("vue").ComputedRef<number>;
     fixedTableHeight: import("vue").ComputedRef<number>;
@@ -84,10 +83,10 @@ declare function useTable(props: TableV2Props): {
     showEmpty: import("vue").ComputedRef<boolean>;
     getRowHeight: (rowIndex: number) => number;
     onColumnSorted: (e: MouseEvent) => void;
-    onRowHovered: ({ hovered, rowKey }: import("element-plus/es/element-plus").RowHoverParams) => void;
-    onRowExpanded: ({ expanded, rowData, rowIndex, rowKey, }: import("element-plus/es/element-plus").RowExpandParams) => void;
+    onRowHovered: ({ hovered, rowKey }: import("element-plus").RowHoverParams) => void;
+    onRowExpanded: ({ expanded, rowData, rowIndex, rowKey, }: import("element-plus").RowExpandParams) => void;
     onRowsRendered: (params: import("./grid").onRowRenderedParams) => void;
-    onRowHeightChange: ({ rowKey, height, rowIndex }: import("element-plus/es/element-plus").RowHeightChangedParams, fixedDir: import("./types").FixedDirection) => void;
+    onRowHeightChange: ({ rowKey, height, rowIndex }: import("element-plus").RowHeightChangedParams, fixedDir: import("./types").FixedDirection) => void;
     scrollTo: (params: import("./composables").ScrollPos) => void;
     scrollToLeft: (scrollLeft: number) => void;
     scrollToTop: (scrollTop: number) => void;
