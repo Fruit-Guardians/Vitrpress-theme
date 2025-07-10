@@ -25,3 +25,5 @@ Thumbs.db
 # 其他
 .idea/
 *.swp 
+
+node_modules/
