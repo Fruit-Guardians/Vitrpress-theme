@@ -1,7 +1,7 @@
 {
-  "name": "fruit-guardians-vitepress-template",
+  "name": "api-finder-docs",
   "version": "1.0.0",
-  "description": "一个现代化、美观、易用的VitePress文档模板，专为开发者和团队打造。",
+  "description": "Api-Finder 官方文档站 - 一个强大的前端API端点发现和扫描工具",
   "type": "module",
   "scripts": {
     "dev": "vitepress dev docs",
@@ -15,40 +15,58 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Fruit-Guardians/Vitrpress-theme.git"
+    "url": "https://github.com/jujubooom/Api-Finder.git"
   },
   "keywords": [
+    "api-finder",
+    "api-discovery",
+    "frontend-scanner",
+    "security-tool",
+    "penetration-testing",
+    "api-endpoints",
+    "web-scanner",
     "vitepress",
-    "template",
-    "docs",
-    "modern",
-    "vue3",
-    "tailwindcss",
-    "element-plus",
-    "文档模板",
-    "现代化"
+    "documentation"
   ],
-  "author": "Fruit-Guardians,bx",
+  "author": "jujubooom",
   "license": "MIT",
-  "homepage": "https://github.com/Fruit-Guardians/Vitrpress-theme",
+  "homepage": "https://github.com/jujubooom/Api-Finder",
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2.3.0",
-    "@types/node": "^18.14.1",
+    "@types/node": "^24.0.3",
+    "@types/dom-view-transitions": "^1.0.6",
     "@typescript-eslint/eslint-plugin": "^8.16.0",
     "autoprefixer": "^10.4.13",
     "eslint": "^9.5.0",
     "eslint-plugin-vue": "^9.26.0",
+    "less": "^4.3.0",
     "postcss": "^8.4.21",
     "rimraf": "^5.0.5",
+    "sass": "^1.89.2",
     "tailwindcss": "^3.2.7",
     "typescript": "^5.0.0",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vitepress": "1.2.3",
+    "vitepress": "^1.6.3",
     "vue-tsc": "^2.0.0"
   },
   "dependencies": {
+    "@vueuse/core": "^10.7.0",
     "element-plus": "^2.2.32",
-    "medium-zoom": "^1.0.8",
-    "vue": "^3.4.14"
+    "medium-zoom": "^1.1.0",
+    "vue": "^3.5.17",
+    "vitepress-plugin-mermaid": "^2.0.17",
+    "@mdit-vue/shared": "^2.1.4",
+    "markdown-it-container": "^4.0.0",
+    "markdown-it-footnote": "^4.0.0",
+    "busuanzi.pure.js": "^1.0.3",
+    "canvas-confetti": "^1.9.3",
+    "fast-glob": "^3.3.3",
+    "gray-matter": "^4.0.3",
+    "markdown-it-task-checkbox": "^1.0.6",
+    "mermaid": "^11.7.0",
+    "nprogress-v2": "^1.1.10",
+    "vitepress-plugin-comment-with-giscus": "^1.1.15",
+    "vitepress-plugin-group-icons": "^1.6.0",
+    "xgplayer": "^3.0.22"
   }
 }
