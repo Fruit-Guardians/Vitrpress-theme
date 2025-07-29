@@ -754,7 +754,9 @@ POST /api/login (98%) - auth.js
 </style>
 
 <script>
-// 结果分析器的JavaScript代码
+// 结果分析器的JavaScript代码<script>
+// 确保只在客户端运行
+if (typeof window !== 'undefined') {
 document.addEventListener('DOMContentLoaded', function() {
   const fileInput = document.getElementById('file-input');
   const uploadArea = document.getElementById('upload-area');
@@ -1089,4 +1091,5 @@ document.addEventListener('DOMContentLoaded', function() {
     alert(`查看端点详情: ${endpoint}`);
   };
 });
+} // 客户端检查结束
 </script>
